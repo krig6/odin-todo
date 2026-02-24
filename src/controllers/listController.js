@@ -4,5 +4,7 @@ export const listController = () => {
 
   const addList = (lists, { title }) => [...lists, createList(title)]
 
-  return { addList }
+  const removeList = (lists, listId) => lists.filter(list => list.id !== listId)
+
+  return { addList, removeList }
 }
