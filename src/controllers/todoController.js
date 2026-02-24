@@ -11,6 +11,8 @@ export const todoController = () => {
 
   const removeTodo = (list, todoId) => list.filter(todo => todo.id !== todoId)
 
-  return { addTodo, removeTodo }
+  const updateTodo = (list, todoId, updates) => list.map(todo => todo.id === todoId ? { ...todo, ...updates } : todo)
+
+  return { addTodo, removeTodo, updateTodo }
 
 }
