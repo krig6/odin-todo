@@ -13,6 +13,8 @@ export const todoController = () => {
 
   const updateTodo = (list, todoId, updates) => list.map(todo => todo.id === todoId ? { ...todo, ...updates } : todo)
 
-  return { addTodo, removeTodo, updateTodo }
+  const toggleTodoStatus = (list, todoId) => list.map(todo => todo.id === todoId ? { ...todo, status: todo.status === 'inProgress' ? 'completed' : 'inProgress' } : todo)
+
+  return { addTodo, removeTodo, updateTodo, toggleTodoStatus }
 
 }
