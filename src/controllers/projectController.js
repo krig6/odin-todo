@@ -4,5 +4,7 @@ export const projectController = () => {
 
   const addProject = (projects, { title }) => [...projects, createProject(title)]
 
-  return { addProject }
+  const removeProject = (projects, projectId) => projects.filter(project => project.id !== projectId)
+
+  return { addProject, removeProject }
 }
