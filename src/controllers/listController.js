@@ -6,7 +6,7 @@ export const listController = () => {
 
   const removeList = (lists, listId) => lists.filter(list => list.id !== listId)
 
-  const updateList = (lists, listId, updates) => lists.map(list => list.id === listId ? { ...list, ...updates } : list)
+  const updateListTitle = (lists, listId, newListTitle) => lists.map(list => list.id === listId ? { ...list, title: newListTitle } : list)
 
-  return { addList, removeList, updateList }
+  return { addList, removeList, updateListTitle }
 }
