@@ -9,5 +9,8 @@ export const todoController = () => {
     priority,
     status }) => createTodo(title, description, dueDate, priority, status)
 
-  return { addTodo }
+  const removeTodo = (list, todoId) => list.filter(todo => todo.id !== todoId)
+
+  return { addTodo, removeTodo }
+
 }
