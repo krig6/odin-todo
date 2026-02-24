@@ -6,5 +6,7 @@ export const projectController = () => {
 
   const removeProject = (projects, projectId) => projects.filter(project => project.id !== projectId)
 
-  return { addProject, removeProject }
+  const updateProject = (projects, projectId, updates) => projects.map(project => project.id === projectId ? { ...project, ...updates } : project)
+
+  return { addProject, removeProject, updateProject }
 }
