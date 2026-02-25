@@ -8,11 +8,19 @@ export const renderLists = (lists) => {
     li.dataset.id = list.id
     li.classList.add('list-item')
 
+    const deleteBtn = document.createElement('button')
+    deleteBtn.classList.add('list-item__delete')
+
+    const deleteIcon = document.createElement('i')
+    deleteIcon.classList.add('bx', 'bx-x')
+    deleteBtn.appendChild(deleteIcon)
+
+
     const titleSpan = document.createElement('span')
     titleSpan.textContent = list.title
     titleSpan.classList.add('list-item__title')
 
-    li.append(titleSpan)
+    li.append(titleSpan, deleteBtn)
     listContainer.appendChild(li)
   })
 
@@ -31,6 +39,17 @@ export const bindAddList = (callbackFunction) => {
     if (value !== '') {
       callbackFunction(value)
       title.value = ''
+    }
+  })
+}
+
+export const bindRemoveList = (callbackFunction) => {
+  listContainer.addEventListener('click', (e) => {
+    if (e.target.closest('.list-item__delete')) {
+      e.stopPropagation()
+      const li = e.target.closest('.list-item')
+      const listId = li.dataset.id
+      callbackFunction(listId)
     }
   })
 }
