@@ -1,6 +1,6 @@
 const projectList = document.getElementById('project-list')
 
-export const renderProjects = (projects) => {
+export const renderProjects = (projects, selectedId) => {
   projectList.innerHTML = ''
 
   projects.forEach(project => {
@@ -17,6 +17,12 @@ export const renderProjects = (projects) => {
     deleteBtn.appendChild(deleteIcon)
 
     li.appendChild(deleteBtn)
+
+    if (project.id === selectedId) {
+      li.classList.add('project-item__selected')
+    } else {
+      li.classList.remove('project-item__selected')
+    }
 
     projectList.appendChild(li)
   })
@@ -47,5 +53,14 @@ export const bindRemoveProject = (callbackFunction) => {
       const projectId = li.dataset.id
       callbackFunction(projectId)
     }
+  })
+}
+
+export const bindSelectProject = (callbackFunction) => {
+  projectList.addEventListener('click', (e) => {
+    const li = e.target.closest('.project-item')
+    if (!li) return
+    const projectId = li.dataset.id
+    callbackFunction(projectId)
   })
 }
