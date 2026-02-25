@@ -12,3 +12,20 @@ export const renderProjects = (projects) => {
     projectList.appendChild(li)
   })
 }
+
+export const bindAddProject = (callbackFunction) => {
+  const form = document.getElementById('add-project-form')
+  const title = document.getElementById('project-input')
+
+  if (!form || !title) return
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const value = title.value.trim()
+
+    if (value !== '') {
+      callbackFunction(value)
+      title.value = ''
+    }
+  })
+}
