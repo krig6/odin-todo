@@ -1,15 +1,33 @@
-< !DOCTYPE html>
-  <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-      <%= htmlWebpackPlugin.options.title %>
-    </title>
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+</head>
 
-  <body>
-  </body>
+<body>
+  <div id="app" class="app">
 
-  </html>
+    <aside id="project-panel" class="app__sidebar">
+      <h1 class="project-panel__title">Projects</h1>
+
+      <ul id="project-list" class="project-panel__list">
+      </ul>
+
+      <form id="add-project-form" class="project-panel__form">
+        <input type="text" id="project-input" class="project-panel__input" placeholder="New project..." required />
+        <button type="submit" class="project-form__btn">Add</button>
+      </form>
+
+    </aside>
+
+    <main id="content" class="app__main">
+    </main>
+  </div>
+</body>
+
+</html>
