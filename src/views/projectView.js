@@ -63,6 +63,9 @@ export const bindSelectProject = (callbackFunction) => {
   projectList.addEventListener('click', (e) => {
     const li = e.target.closest('.project-item')
     if (!li) return
+    if (e.target.closest('.project-item__delete')) return
+
+    if (e.detail > 1) return
     const projectId = li.dataset.id
     callbackFunction(projectId)
   })
