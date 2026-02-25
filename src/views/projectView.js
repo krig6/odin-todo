@@ -41,6 +41,12 @@ export const bindAddProject = (callbackFunction) => {
     e.preventDefault()
     const value = title.value.trim()
 
+    if (isProjectTitleTaken(value)) {
+      alert('This project title already exists.')
+      title.select()
+      return
+    }
+
     if (value !== '') {
       callbackFunction(value)
       title.value = ''
@@ -96,6 +102,12 @@ export const bindUpdateProjectTitle = (callbackFunction) => {
 
       const newTitle = input.value.trim()
       if (save && newTitle !== '' && newTitle !== currentTitle) {
+        if (isProjectTitleTaken(newTitle, titleSpan)) {
+          alert('Another project with this title already exists.')
+          input.focus()
+          isEditing = true
+          return
+        }
         callbackFunction(projectId, newTitle)
       }
       if (input.parentNode) {
@@ -121,4 +133,12 @@ export const bindUpdateProjectTitle = (callbackFunction) => {
       finishedEditing(true)
     })
   })
+}
+
+const isProjectTitleTaken = (title, currentSpan = null) => {
+  const existingTitle = Array.from(document.querySelectorAll('.project-item__title'))
+    .filter(span => span !== currentSpan)
+    .map(span => span.textContent.trim().toLowerCase())
+
+  return existingTitle.includes(title.trim().toLowerCase())
 }
