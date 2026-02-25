@@ -130,7 +130,7 @@ export const bindUpdateProjectTitle = (callbackFunction) => {
     })
 
     input.addEventListener('blur', () => {
-      finishedEditing(true)
+      finishedEditing(false)
     })
   })
 }
