@@ -36,6 +36,12 @@ export const bindAddList = (callbackFunction) => {
     e.preventDefault()
     const value = title.value.trim()
 
+    if (isListTitleTaken(value)) {
+      alert('This project title already exists.')
+      title.select()
+      return
+    }
+
     if (value !== '') {
       callbackFunction(value)
       title.value = ''
@@ -52,4 +58,71 @@ export const bindRemoveList = (callbackFunction) => {
       callbackFunction(listId)
     }
   })
+}
+
+export const bindUpdateListTitle = (callbackFunction) => {
+  listContainer.addEventListener('dblclick', (e) => {
+    const li = e.target.closest('.list-item')
+    if (!li) return
+
+    const listId = li.dataset.id
+    const titleSpan = li.querySelector('.list-item__title')
+    if (!titleSpan) return
+
+    const currentTitle = titleSpan.textContent
+    const input = document.createElement('input')
+    titleSpan.replaceWith(input)
+    input.type = 'text'
+    input.value = currentTitle
+    input.focus()
+    input.select()
+
+    let isEditing = true
+
+    const finishedEditing = (save) => {
+      if (!isEditing) return
+      isEditing = false
+
+      const newTitle = input.value.trim()
+      if (save && newTitle !== '' && newTitle !== currentTitle) {
+        if (isListTitleTaken(newTitle, titleSpan)) {
+          alert('Another list with this title already exists.')
+          input.focus()
+          isEditing = true
+          return
+        }
+        callbackFunction(listId, newTitle)
+      }
+
+      if (input.parentNode) {
+        const newTitleSpan = document.createElement('span')
+        newTitleSpan.classList.add('list-item__title')
+        newTitleSpan.textContent = save && newTitle !== '' ? newTitle : currentTitle
+        input.replaceWith(newTitleSpan)
+      }
+    }
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        finishedEditing(true)
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        finishedEditing(false)
+      }
+    })
+
+    input.addEventListener('blur', () => {
+      finishedEditing(false)
+    })
+  })
+}
+
+const isListTitleTaken = (title, currentSpan = null) => {
+  const existingTitle = Array.from(document.querySelectorAll('.list-item__title'))
+    .filter(span => span !== currentSpan)
+    .map(span => span.textContent.trim().toLowerCase())
+
+  return existingTitle.includes(title.trim().toLowerCase())
 }
