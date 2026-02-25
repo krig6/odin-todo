@@ -5,9 +5,12 @@ export const renderProjects = (projects, selectedId) => {
 
   projects.forEach(project => {
     const li = document.createElement('li')
-    li.textContent = project.title
     li.dataset.id = project.id
     li.classList.add('project-item')
+
+    const titleSpan = document.createElement('span')
+    titleSpan.textContent = project.title
+    titleSpan.classList.add('project-item__title')
 
     const deleteBtn = document.createElement('button')
     deleteBtn.classList.add('project-item__delete')
@@ -16,7 +19,7 @@ export const renderProjects = (projects, selectedId) => {
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
 
-    li.appendChild(deleteBtn)
+    li.append(titleSpan, deleteBtn)
 
     if (project.id === selectedId) {
       li.classList.add('project-item__selected')
@@ -62,5 +65,57 @@ export const bindSelectProject = (callbackFunction) => {
     if (!li) return
     const projectId = li.dataset.id
     callbackFunction(projectId)
+  })
+}
+
+export const bindUpdateProjectTitle = (callbackFunction) => {
+  projectList.addEventListener('dblclick', (e) => {
+    const li = e.target.closest('.project-item')
+    if (!li) return
+
+    const projectId = li.dataset.id
+    const titleSpan = li.querySelector('.project-item__title')
+    if (!titleSpan) return
+
+    const currentTitle = titleSpan.textContent
+    const input = document.createElement('input')
+    titleSpan.replaceWith(input)
+    input.type = 'text'
+    input.value = currentTitle
+    input.focus()
+    input.select()
+
+    let isEditing = true
+
+    const finishedEditing = (save) => {
+      if (!isEditing) return
+      isEditing = false
+
+      const newTitle = input.value.trim()
+      if (save && newTitle !== '' && newTitle !== currentTitle) {
+        callbackFunction(projectId, newTitle)
+      }
+      if (input.parentNode) {
+        const newTitleSpan = document.createElement('span')
+        newTitleSpan.classList.add('project-item__title')
+        newTitleSpan.textContent = save && newTitle !== '' ? newTitle : currentTitle
+        input.replaceWith(newTitleSpan)
+      }
+    }
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        finishedEditing(true)
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        finishedEditing(false)
+      }
+    })
+
+    input.addEventListener('blur', () => {
+      finishedEditing(true)
+    })
   })
 }
