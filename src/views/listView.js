@@ -17,3 +17,20 @@ export const renderLists = (lists) => {
   })
 
 }
+
+export const bindAddList = (callbackFunction) => {
+  const form = document.getElementById('add-list-form')
+  const title = document.getElementById('list-input')
+
+  if (!form || !title) return
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const value = title.value.trim()
+
+    if (value !== '') {
+      callbackFunction(value)
+      title.value = ''
+    }
+  })
+}
