@@ -17,3 +17,45 @@ export const renderTodos = (listId, todos) => {
     todoContainer.appendChild(li)
   })
 }
+
+export const bindAddTodo = (callbackFunction) => {
+  const listContainer = document.querySelector(`.list-container`)
+  const form = document.getElementById('todo-form')
+  const todoModal = document.getElementById('todo-modal')
+
+  const titleInput = document.getElementById('todo-input-title')
+  const descriptionInput = document.getElementById('todo-input-description')
+  const dueDateInput = document.getElementById('todo-input-due-date')
+  const priorityInput = document.getElementById('todo-input-priority')
+
+  if (!form || !todoModal || !listContainer) return
+
+  listContainer.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('.list-item__add-todo')
+    if (!addBtn) return
+    e.stopPropagation()
+
+    const li = addBtn.closest('.list-item')
+    if (!li) return
+    const listId = li.dataset.id
+
+    form.dataset.listId = listId
+    todoModal.show()
+  })
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const listId = form.dataset.listId
+    const title = titleInput.value.trim()
+    const description = descriptionInput.value.trim()
+    const dueDate = dueDateInput.value
+    const priority = priorityInput.value
+
+    if (!title) return
+
+    callbackFunction(listId, { title, description, dueDate, priority })
+
+    form.reset()
+    todoModal.close()
+  })
+}
