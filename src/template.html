@@ -7,6 +7,7 @@
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -26,6 +27,12 @@
     </aside>
 
     <main id="content" class="app__main">
+      <ul id="list-container" class="list-container"></ul>
+
+      <form id="add-list-form" class="list-panel__form">
+        <input type="text" id="list-input" class="list-panel__input" placeholder="New list..." required />
+        <button type="submit" class="list-form__btn">Add</button>
+      </form>
     </main>
   </div>
 </body>
