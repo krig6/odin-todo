@@ -15,12 +15,19 @@ export const renderLists = (lists) => {
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
 
+    const todoContainer = document.createElement('ul')
+    todoContainer.classList.add('todo-container')
+    todoContainer.dataset.listId = list.id
+
+    const addTodoBtn = document.createElement('button')
+    addTodoBtn.textContent = '+ Add Todo'
+    addTodoBtn.classList.add('list-item__add-todo')
 
     const titleSpan = document.createElement('span')
     titleSpan.textContent = list.title
     titleSpan.classList.add('list-item__title')
 
-    li.append(titleSpan, deleteBtn)
+    li.append(titleSpan, deleteBtn, todoContainer, addTodoBtn)
     listContainer.appendChild(li)
   })
 
