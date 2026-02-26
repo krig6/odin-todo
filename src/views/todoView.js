@@ -13,7 +13,14 @@ export const renderTodos = (listId, todos) => {
     titleSpan.textContent = todo.title
     titleSpan.classList.add('todo-item__title')
 
-    li.appendChild(titleSpan)
+    const deleteBtn = document.createElement('button')
+    deleteBtn.classList.add('todo-item__delete')
+
+    const deleteIcon = document.createElement('i')
+    deleteIcon.classList.add('bx', 'bx-x')
+    deleteBtn.appendChild(deleteIcon)
+
+    li.append(titleSpan, deleteBtn)
     todoContainer.appendChild(li)
   })
 }
@@ -57,5 +64,25 @@ export const bindAddTodo = (callbackFunction) => {
 
     form.reset()
     todoModal.close()
+  })
+}
+
+export const bindRemoveTodo = (callbackFunction) => {
+  const listContainer = document.querySelector(`.list-container`)
+  if (!listContainer) return
+  listContainer.addEventListener('click', (e) => {
+    const deleteBtn = e.target.closest('.todo-item__delete')
+    if (!deleteBtn) return
+    e.stopPropagation()
+
+    const todoContainer = deleteBtn.closest('.todo-container')
+    const todo = deleteBtn.closest('.todo-item')
+
+    if (!todo || !todoContainer) return
+
+    const listId = todoContainer.dataset.listId
+    const todoId = todo.dataset.id
+
+    callbackFunction(listId, todoId)
   })
 }
