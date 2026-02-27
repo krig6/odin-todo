@@ -27,6 +27,14 @@ export const renderTodos = (listId, todos) => {
     priority.textContent = todo.priority
     priority.classList.add('todo-item__priority')
 
+    const statusBtn = document.createElement('button')
+    statusBtn.classList.add('todo-item__status')
+
+    const statusIcon = document.createElement('i')
+    const isCompleted = todo.status === 'inProgress' ? false : true
+    statusIcon.classList.add(isCompleted ? 'bx-check-circle' : 'bx-clock-dashed-half')
+    statusBtn.appendChild(statusIcon)
+
     const deleteBtn = document.createElement('button')
     deleteBtn.classList.add('todo-item__delete')
 
@@ -34,7 +42,7 @@ export const renderTodos = (listId, todos) => {
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
 
-    li.append(title, description, dueDate, priority, deleteBtn)
+    li.append(deleteBtn, title, description, dueDate, priority, statusBtn)
     todoContainer.appendChild(li)
   })
 }
@@ -129,5 +137,31 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
 
     form.reset()
     todoModal.close()
+  })
+}
+
+export const bindToggleTodoStatus = (callbackFunction) => {
+  const listContainer = document.getElementById('list-container')
+  if (!listContainer) return
+
+  listContainer.addEventListener('click', (e) => {
+    const statusBtn = e.target.closest('.todo-item__status')
+    if (!statusBtn) return
+
+    e.stopPropagation()
+
+    const statusIcon = statusBtn.querySelector('i')
+    const isCompleted = statusIcon.classList.contains('bx-check-circle')
+
+    statusIcon.classList.remove(isCompleted ? 'bx-check-circle' : 'bx-clock-dashed-half')
+    statusIcon.classList.add(isCompleted ? 'bx-clock-dashed-half' : 'bx-check-circle')
+
+
+    const todoContainer = statusIcon.closest('.todo-container')
+    const todo = statusIcon.closest('.todo-item')
+
+    const listId = todoContainer.dataset.listId
+    const todoId = todo.dataset.id
+    callbackFunction(listId, todoId)
   })
 }
