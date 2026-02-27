@@ -15,8 +15,5 @@ export const todoController = () => {
 
   const toggleTodoStatus = (todos, todoId) => todos.map(todo => todo.id === todoId ? { ...todo, status: todo.status === 'inProgress' ? 'completed' : 'inProgress' } : todo)
 
-  const updatePriority = (todos, todoId, newPriority) => todos.map(todo => todo.id === todoId ? { ...todo, priority: newPriority } : todo)
-
-  return { addTodo, removeTodo, updateTodo, toggleTodoStatus, updatePriority }
-
+  return { addTodo, removeTodo, updateTodo, toggleTodoStatus }
 }
