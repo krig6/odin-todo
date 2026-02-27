@@ -100,6 +100,7 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
       form.reset()
       todoModal.showModal()
     } else if (todoItem) {
+      if (e.target.closest('button')) return
       document.querySelector('.todo-modal__title').textContent = 'Edit Todo'
 
       currentMode = 'edit'
