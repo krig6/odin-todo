@@ -100,3 +100,56 @@ export const bindRemoveTodo = (callbackFunction) => {
     callbackFunction(listId, todoId)
   })
 }
+
+export const bindUpdateTodo = (callbackFunction) => {
+  const listContainer = document.querySelector(`.list-container`)
+  const form = document.getElementById('todo-form')
+  const todoModal = document.getElementById('todo-modal')
+  let todoId = null
+
+  const titleInput = document.getElementById('todo-input-title')
+  const descriptionInput = document.getElementById('todo-input-description')
+  const dueDateInput = document.getElementById('todo-input-due-date')
+  const priorityInput = document.getElementById('todo-input-priority')
+
+  if (!form || !todoModal || !listContainer) return
+
+  listContainer.addEventListener('click', (e) => {
+    const todoItem = e.target.closest('.todo-item')
+    if (!todoItem) return
+    e.stopPropagation()
+
+    todoId = todoItem.dataset.id
+    document.querySelector('.todo-modal__title').textContent = 'Edit Todo'
+
+    const li = todoItem.closest('.list-item')
+    if (!li) return
+    const listId = li.dataset.id
+    form.dataset.listId = listId
+
+    titleInput.value = todoItem.querySelector('.todo-item__title')?.textContent || ''
+    descriptionInput.value = todoItem.querySelector('.todo-item__description')?.textContent || ''
+
+    const existingDueDate = todoItem.querySelector('.todo-item__due-date')?.dateTime || ''
+    dueDateInput.value = existingDueDate ? existingDueDate.split('T')[0] : ''
+
+    priorityInput.value = todoItem.querySelector('.todo-item__priority')?.textContent || 'high'
+    todoModal.showModal()
+  })
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const listId = form.dataset.listId
+    const title = titleInput.value.trim()
+    const description = descriptionInput.value.trim()
+    const dueDate = dueDateInput.value ? new Date(dueDateInput.value) : undefined
+    const priority = priorityInput.value
+
+    if (!title) return
+
+    callbackFunction(listId, todoId, { title, description, dueDate, priority })
+
+    form.reset()
+    todoModal.close()
+  })
+}
