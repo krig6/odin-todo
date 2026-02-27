@@ -39,48 +39,6 @@ export const renderTodos = (listId, todos) => {
   })
 }
 
-export const bindAddTodo = (callbackFunction) => {
-  const listContainer = document.querySelector(`.list-container`)
-  const form = document.getElementById('todo-form')
-  const todoModal = document.getElementById('todo-modal')
-
-  const titleInput = document.getElementById('todo-input-title')
-  const descriptionInput = document.getElementById('todo-input-description')
-  const dueDateInput = document.getElementById('todo-input-due-date')
-  const priorityInput = document.getElementById('todo-input-priority')
-
-  if (!form || !todoModal || !listContainer) return
-
-  listContainer.addEventListener('click', (e) => {
-    const addBtn = e.target.closest('.list-item__add-todo')
-    if (!addBtn) return
-    e.stopPropagation()
-
-    const li = addBtn.closest('.list-item')
-    if (!li) return
-    const listId = li.dataset.id
-
-    form.dataset.listId = listId
-    todoModal.show()
-  })
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const listId = form.dataset.listId
-    const title = titleInput.value.trim()
-    const description = descriptionInput.value.trim()
-    const dueDate = dueDateInput.value
-    const priority = priorityInput.value
-
-    if (!title) return
-
-    callbackFunction(listId, { title, description, dueDate, priority })
-
-    form.reset()
-    todoModal.close()
-  })
-}
-
 export const bindRemoveTodo = (callbackFunction) => {
   const listContainer = document.querySelector(`.list-container`)
   if (!listContainer) return
@@ -101,40 +59,56 @@ export const bindRemoveTodo = (callbackFunction) => {
   })
 }
 
-export const bindUpdateTodo = (callbackFunction) => {
-  const listContainer = document.querySelector(`.list-container`)
+export const bindTodoModalActions = (addCallback, updateCallback) => {
+  const listContainer = document.getElementById('list-container')
   const form = document.getElementById('todo-form')
   const todoModal = document.getElementById('todo-modal')
-  let todoId = null
 
   const titleInput = document.getElementById('todo-input-title')
   const descriptionInput = document.getElementById('todo-input-description')
   const dueDateInput = document.getElementById('todo-input-due-date')
   const priorityInput = document.getElementById('todo-input-priority')
 
-  if (!form || !todoModal || !listContainer) return
+  let currentMode = 'add'
+  let todoId = null
+
+  if (!listContainer || !form || !todoModal) return
 
   listContainer.addEventListener('click', (e) => {
-    const todoItem = e.target.closest('.todo-item')
-    if (!todoItem) return
     e.stopPropagation()
 
-    todoId = todoItem.dataset.id
-    document.querySelector('.todo-modal__title').textContent = 'Edit Todo'
+    const addBtn = e.target.closest('.list-item__add-todo')
+    const todoItem = e.target.closest('.todo-item')
 
-    const li = todoItem.closest('.list-item')
-    if (!li) return
-    const listId = li.dataset.id
-    form.dataset.listId = listId
+    if (addBtn) {
+      document.querySelector('.todo-modal__title').textContent = 'Add Todo'
 
-    titleInput.value = todoItem.querySelector('.todo-item__title')?.textContent || ''
-    descriptionInput.value = todoItem.querySelector('.todo-item__description')?.textContent || ''
+      currentMode = 'add'
+      todoId = null
 
-    const existingDueDate = todoItem.querySelector('.todo-item__due-date')?.dateTime || ''
-    dueDateInput.value = existingDueDate ? existingDueDate.split('T')[0] : ''
+      const li = addBtn.closest('.list-item')
+      if (!li) return
+      form.dataset.listId = li.dataset.id
+      form.reset()
+      todoModal.showModal()
+    } else if (todoItem) {
+      document.querySelector('.todo-modal__title').textContent = 'Edit Todo'
 
-    priorityInput.value = todoItem.querySelector('.todo-item__priority')?.textContent || 'high'
-    todoModal.showModal()
+      currentMode = 'edit'
+      todoId = todoItem.dataset.id
+
+      const li = todoItem.closest('.list-item')
+      if (!li) return
+      form.dataset.listId = li.dataset.id
+
+      titleInput.value = todoItem.querySelector('.todo-item__title')?.textContent || ''
+      descriptionInput.value = todoItem.querySelector('.todo-item__description')?.textContent || ''
+      const existingDueDate = todoItem.querySelector('.todo-item__due-date')?.dateTime || ''
+      dueDateInput.value = existingDueDate ? existingDueDate.split('T')[0] : ''
+      priorityInput.value = todoItem.querySelector('.todo-item__priority')?.textContent || ''
+
+      todoModal.showModal()
+    }
   })
 
   form.addEventListener('submit', (e) => {
@@ -147,7 +121,11 @@ export const bindUpdateTodo = (callbackFunction) => {
 
     if (!title) return
 
-    callbackFunction(listId, todoId, { title, description, dueDate, priority })
+    if (currentMode === 'add') {
+      addCallback(listId, { title, description, dueDate, priority })
+    } else if (currentMode === 'edit') {
+      updateCallback(listId, todoId, { title, description, dueDate, priority })
+    }
 
     form.reset()
     todoModal.close()
