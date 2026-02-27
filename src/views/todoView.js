@@ -9,9 +9,23 @@ export const renderTodos = (listId, todos) => {
     li.dataset.id = todo.id
     li.classList.add('todo-item', `todo-item--${todo.priority}`)
 
-    const titleSpan = document.createElement('span')
-    titleSpan.textContent = todo.title
-    titleSpan.classList.add('todo-item__title')
+    const title = document.createElement('h3')
+    title.textContent = todo.title
+    title.classList.add('todo-item__title')
+
+    const description = document.createElement('p')
+    description.textContent = todo.description
+    description.classList.add('todo-item__description')
+
+    const dueDate = document.createElement('time')
+    const dateObj = new Date(todo.dueDate)
+    dueDate.textContent = dateObj.toLocaleDateString()
+    dueDate.dateTime = dateObj.toISOString()
+    dueDate.classList.add('todo-item__due-date')
+
+    const priority = document.createElement('span')
+    priority.textContent = todo.priority
+    priority.classList.add('todo-item__priority')
 
     const deleteBtn = document.createElement('button')
     deleteBtn.classList.add('todo-item__delete')
@@ -20,7 +34,7 @@ export const renderTodos = (listId, todos) => {
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
 
-    li.append(titleSpan, deleteBtn)
+    li.append(title, description, dueDate, priority, deleteBtn)
     todoContainer.appendChild(li)
   })
 }
