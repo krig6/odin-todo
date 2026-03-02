@@ -99,6 +99,7 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
       form.dataset.listId = li.dataset.id
       form.reset()
       todoModal.showModal()
+      titleInput.focus()
     } else if (todoItem) {
       if (e.target.closest('button')) return
       document.querySelector('.todo-modal__title').textContent = 'Edit Todo'
@@ -117,6 +118,7 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
       priorityInput.value = todoItem.querySelector('.todo-item__priority')?.textContent || ''
 
       todoModal.showModal()
+      titleInput.focus()
     }
   })
 
