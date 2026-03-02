@@ -18,6 +18,18 @@ export const appController = () => {
   let projects = []
   let selectedProjectId = null
 
+  const getProject = (projectId) => projects.find(project => project.id === projectId)
+  const getList = (project, listId) => project.lists.find(list => list.id === listId)
+
+  const getListContext = (listId) => {
+    if (!selectedProjectId) return null
+    const project = getProject(selectedProjectId)
+    if (!project) return null
+    const list = getList(project, listId)
+    if (!list) return null
+    return [project, list]
+  }
+
   const init = () => {
     renderProjects(projects, selectedProjectId)
 
@@ -26,7 +38,7 @@ export const appController = () => {
       selectedProjectId = projects[projects.length - 1].id
       renderProjects(projects, selectedProjectId)
 
-      const project = projects.find(project => project.id === selectedProjectId)
+      const project = getProject(selectedProjectId)
       renderLists(project.lists)
     })
 
@@ -43,8 +55,10 @@ export const appController = () => {
     bindSelectProject((projectId) => {
       selectedProjectId = projectId
       renderProjects(projects, projectId)
-      const project = projects.find(project => project.id === projectId)
+
+      const project = getProject(selectedProjectId)
       renderLists(project.lists)
+
       project.lists.forEach(list => {
         renderTodos(list.id, list.todos)
       })
@@ -58,8 +72,7 @@ export const appController = () => {
 
     bindAddList((listTitle) => {
       if (!selectedProjectId) return
-
-      const project = projects.find(project => project.id === selectedProjectId)
+      const project = getProject(selectedProjectId)
       if (!project) return
 
       project.lists = listCntrlr.addList(project.lists, { title: listTitle })
@@ -68,54 +81,42 @@ export const appController = () => {
 
     bindRemoveList((listId) => {
       if (!selectedProjectId) return
-
-      const project = projects.find(project => project.id === selectedProjectId)
+      const project = getProject(selectedProjectId)
       if (!project) return
 
       project.lists = listCntrlr.removeList(project.lists, listId)
       renderLists(project.lists)
+
       project.lists.forEach(list => {
         renderTodos(list.id, list.todos)
       })
     })
 
     bindUpdateListTitle((listId, newTitle) => {
-      const currentProject = projects.find(project => project.id === selectedProjectId)
-      if (!currentProject) return
+      const project = getProject(selectedProjectId)
+      if (!project) return
 
-      currentProject.lists = currentProject.lists.map(list => {
+      project.lists = project.lists.map(list => {
         if (list.id === listId) {
           return { ...list, title: newTitle }
         }
         return list
       })
-
-      renderLists(currentProject.lists)
+      renderLists(project.lists)
     })
 
     bindTodoModalActions(
       (listId, todoData) => {
-        if (!selectedProjectId) return
-
-        const project = projects.find(project => project.id === selectedProjectId)
-        if (!project) return
-
-        const list = project.lists.find(list => list.id === listId)
-        if (!list) return
+        const [project, list] = getListContext(listId)
+        if (!project || !list) return
 
         list.todos = todoCntrlr.addTodo(list.todos, todoData)
-
         renderTodos(listId, list.todos)
       },
 
       (listId, todoId, updates) => {
-        if (!selectedProjectId) return
-
-        const project = projects.find(project => project.id === selectedProjectId)
-        if (!project) return
-
-        const list = project.lists.find(list => list.id === listId)
-        if (!list) return
+        const [project, list] = getListContext(listId)
+        if (!project || !list) return
 
         list.todos = todoCntrlr.updateTodo(list.todos, todoId, updates)
         renderTodos(listId, list.todos)
@@ -123,30 +124,18 @@ export const appController = () => {
     )
 
     bindRemoveTodo((listId, todoId) => {
-      if (!selectedProjectId) return
-
-      const project = projects.find(project => project.id === selectedProjectId)
-      if (!project) return
-
-      const list = project.lists.find(list => list.id === listId)
-      if (!list) return
+      const [project, list] = getListContext(listId)
+      if (!project || !list) return
 
       list.todos = todoCntrlr.removeTodo(list.todos, todoId)
-
       renderTodos(listId, list.todos)
     })
 
     bindToggleTodoStatus((listId, todoId) => {
-      if (!selectedProjectId) return
-
-      const project = projects.find(project => project.id === selectedProjectId)
-      if (!project) return
-
-      const list = project.lists.find(list => list.id === listId)
-      if (!list) return
+      const [project, list] = getListContext(listId)
+      if (!project || !list) return
 
       list.todos = todoCntrlr.toggleTodoStatus(list.todos, todoId)
-
       renderTodos(listId, list.todos)
     })
   }
