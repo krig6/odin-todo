@@ -30,6 +30,12 @@ export const appController = () => {
     return [project, list]
   }
 
+  const renderTodosForLists = (projectLists) => {
+    projectLists.forEach(list => {
+      renderTodos(list.id, list.todos)
+    })
+  }
+
   const init = () => {
     renderProjects(projects, selectedProjectId)
 
@@ -58,10 +64,7 @@ export const appController = () => {
 
       const project = getProject(selectedProjectId)
       renderLists(project.lists)
-
-      project.lists.forEach(list => {
-        renderTodos(list.id, list.todos)
-      })
+      renderTodosForLists(project.lists)
     })
 
     bindUpdateProjectTitle((projectId, newTitle) => {
@@ -77,6 +80,7 @@ export const appController = () => {
 
       project.lists = listCntrlr.addList(project.lists, { title: listTitle })
       renderLists(project.lists)
+      renderTodosForLists(project.lists)
     })
 
     bindRemoveList((listId) => {
@@ -86,10 +90,7 @@ export const appController = () => {
 
       project.lists = listCntrlr.removeList(project.lists, listId)
       renderLists(project.lists)
-
-      project.lists.forEach(list => {
-        renderTodos(list.id, list.todos)
-      })
+      renderTodosForLists(project.lists)
     })
 
     bindUpdateListTitle((listId, newTitle) => {
