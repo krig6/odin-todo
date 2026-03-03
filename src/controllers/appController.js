@@ -36,6 +36,11 @@ export const appController = () => {
     })
   }
 
+  const renderProjectView = (project) => {
+    renderLists(project.lists)
+    renderTodosForLists(project.lists)
+  }
+
   const init = () => {
     renderProjects(projects, selectedProjectId)
 
@@ -63,8 +68,7 @@ export const appController = () => {
       renderProjects(projects, projectId)
 
       const project = getProject(selectedProjectId)
-      renderLists(project.lists)
-      renderTodosForLists(project.lists)
+      renderProjectView(project)
     })
 
     bindUpdateProjectTitle((projectId, newTitle) => {
@@ -79,8 +83,7 @@ export const appController = () => {
       if (!project) return
 
       project.lists = listCntrlr.addList(project.lists, { title: listTitle })
-      renderLists(project.lists)
-      renderTodosForLists(project.lists)
+      renderProjectView(project)
     })
 
     bindRemoveList((listId) => {
@@ -89,8 +92,7 @@ export const appController = () => {
       if (!project) return
 
       project.lists = listCntrlr.removeList(project.lists, listId)
-      renderLists(project.lists)
-      renderTodosForLists(project.lists)
+      renderProjectView(project)
     })
 
     bindUpdateListTitle((listId, newTitle) => {
