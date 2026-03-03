@@ -12,33 +12,36 @@
 
 <body>
   <div id="app" class="app">
+    <header class="app_header">
+      <h1 class="app__title">Slacker Tracker</h1>
+    </header>
 
     <aside id="project-panel" class="app__sidebar">
-      <h1 class="project-panel__title">Projects</h1>
-
-      <ul id="project-list" class="project-panel__list">
-      </ul>
+      <h2 class="project-panel__title">Projects</h2>
 
       <form id="add-project-form" class="project-panel__form">
         <input type="text" id="project-input" class="project-panel__input" placeholder="New project..." required />
-        <button type="submit" class="project-form__btn">Add</button>
+        <button type="submit" class="project-form__btn">Add Project</button>
       </form>
+
+      <ul id="project-list" class="project-panel__list"></ul>
 
     </aside>
 
     <main id="content" class="app__main">
-      <ul id="list-container" class="list-container"></ul>
 
       <form id="add-list-form" class="list-panel__form">
         <input type="text" id="list-input" class="list-panel__input" placeholder="New list..." required />
-        <button type="submit" class="list-form__btn">Add</button>
+        <button type="submit" class="list-form__btn">Add List</button>
       </form>
+
+      <ul id="list-container" class="list-container"></ul>
     </main>
 
     <dialog id="todo-modal" class="modal">
       <form id="todo-form" class="todo-modal__form">
         <header class="todo-modal__header">
-          <h2 class="todo-modal__title">Add Todo</h2>
+          <h3 class="todo-modal__title">Add Todo</h3>
           <button type="button" class="todo-modal__close">
             <i class="bx bx-x"></i>
           </button>
