@@ -1,5 +1,3 @@
-import '../../style/style.css'
-
 import { renderProjects, bindAddProject, bindRemoveProject, bindSelectProject, bindUpdateProjectTitle } from "../views/projectView.js";
 
 import { projectController } from "./projectController.js";
