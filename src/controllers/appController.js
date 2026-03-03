@@ -10,12 +10,15 @@ import { listController } from "./listController.js";
 import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from "../views/todoView.js";
 import { todoController } from "./todoController.js";
 
+import { storageController } from "../storage/storageController.js"
+
 export const appController = () => {
   const projCntrlr = projectController()
   const listCntrlr = listController()
   const todoCntrlr = todoController()
+  const storageCntrlr = storageController()
 
-  let projects = []
+  let projects = storageCntrlr.loadProjects() || []
   let selectedProjectId = null
 
   const getProject = (projectId) => projects.find(project => project.id === projectId)
@@ -51,6 +54,8 @@ export const appController = () => {
 
       const project = getProject(selectedProjectId)
       renderLists(project.lists)
+      console.log(project.id)
+      storageCntrlr.saveProjects(projects)
     })
 
     bindRemoveProject((projectId) => {
@@ -61,6 +66,8 @@ export const appController = () => {
         selectedProjectId = null
         renderLists([])
       }
+
+      storageCntrlr.saveProjects(projects)
     })
 
     bindSelectProject((projectId) => {
@@ -75,6 +82,7 @@ export const appController = () => {
       selectedProjectId = projectId
       projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle)
       renderProjects(projects, projectId)
+      storageCntrlr.saveProjects(projects)
     })
 
     bindAddList((listTitle) => {
@@ -84,6 +92,7 @@ export const appController = () => {
 
       project.lists = listCntrlr.addList(project.lists, { title: listTitle })
       renderProjectView(project)
+      storageCntrlr.saveProjects(projects)
     })
 
     bindRemoveList((listId) => {
@@ -93,6 +102,7 @@ export const appController = () => {
 
       project.lists = listCntrlr.removeList(project.lists, listId)
       renderProjectView(project)
+      storageCntrlr.saveProjects(projects)
     })
 
     bindUpdateListTitle((listId, newTitle) => {
@@ -106,6 +116,7 @@ export const appController = () => {
         return list
       })
       renderLists(project.lists)
+      storageCntrlr.saveProjects(projects)
     })
 
     bindTodoModalActions(
@@ -115,6 +126,7 @@ export const appController = () => {
 
         list.todos = todoCntrlr.addTodo(list.todos, todoData)
         renderTodos(listId, list.todos)
+        storageCntrlr.saveProjects(projects)
       },
 
       (listId, todoId, updates) => {
@@ -123,6 +135,7 @@ export const appController = () => {
 
         list.todos = todoCntrlr.updateTodo(list.todos, todoId, updates)
         renderTodos(listId, list.todos)
+        storageCntrlr.saveProjects(projects)
       }
     )
 
@@ -132,6 +145,7 @@ export const appController = () => {
 
       list.todos = todoCntrlr.removeTodo(list.todos, todoId)
       renderTodos(listId, list.todos)
+      storageCntrlr.saveProjects(projects)
     })
 
     bindToggleTodoStatus((listId, todoId) => {
@@ -140,6 +154,7 @@ export const appController = () => {
 
       list.todos = todoCntrlr.toggleTodoStatus(list.todos, todoId)
       renderTodos(listId, list.todos)
+      storageCntrlr.saveProjects(projects)
     })
   }
 
