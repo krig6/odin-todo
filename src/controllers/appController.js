@@ -1,4 +1,4 @@
-import { renderProjects, bindAddProject, bindRemoveProject, bindSelectProject, bindUpdateProjectTitle } from "../views/projectView.js";
+import { renderProjects, bindAddProject, bindRemoveProject, bindSelectProject, bindUpdateProjectTitle, bindProjectPanelToggle } from "../views/projectView.js";
 
 import { projectController } from "./projectController.js";
 
@@ -65,6 +65,7 @@ export const appController = () => {
       renderLists(project.lists)
       persistState()
     })
+    bindProjectPanelToggle()
 
     bindRemoveProject((projectId) => {
       projects = projCntrlr.removeProject(projects, projectId)

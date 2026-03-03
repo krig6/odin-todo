@@ -142,3 +142,25 @@ const isProjectTitleTaken = (title, currentSpan = null) => {
 
   return existingTitle.includes(title.trim().toLowerCase())
 }
+
+export const bindProjectPanelToggle = () => {
+  const panel = document.getElementById('project-panel')
+  const openBtn = document.getElementById('project-panel-open-btn')
+  const closeBtn = document.getElementById('project-panel-close-btn')
+
+  if (!panel || !openBtn) return
+
+  const openPanel = () => panel.classList.add('active')
+  const closePanel = () => panel.classList.remove('active')
+  openBtn.addEventListener('click', (e) => {
+    e.stopPropagation()
+    openPanel()
+  })
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      closePanel()
+    })
+  }
+}

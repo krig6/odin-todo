@@ -12,12 +12,21 @@
 
 <body>
   <div id="app" class="app">
-    <header class="app_header">
+
+    <header class="app__header">
       <h1 class="app__title">Slacker Tracker</h1>
+      <button id="project-panel-open-btn" class="app__panel-open-btn">
+        <i class="bx bx-archive"></i>
+      </button>
     </header>
 
-    <aside id="project-panel" class="app__sidebar">
-      <h2 class="project-panel__title">Projects</h2>
+    <aside id="project-panel" class="project-panel">
+      <header class="project-panel__header">
+        <h2 class="project-panel__title">Projects</h2>
+        <button id="project-panel-close-btn" class="project-panel__close-btn">
+          <i class="bx bx-x" /></i>
+        </button>
+      </header>
 
       <form id="add-project-form" class="project-panel__form">
         <input type="text" id="project-input" class="project-panel__input" placeholder="New project..." required />
@@ -25,6 +34,8 @@
       </form>
 
       <ul id="project-list" class="project-panel__list"></ul>
+        <ul id="project-list" class="project-panel__list"></ul>
+      </div>
 
     </aside>
 
