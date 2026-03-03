@@ -42,10 +42,19 @@ export const appController = () => {
     renderTodosForLists(project.lists)
   }
 
+  const persistState = () => {
+    storageCntrlr.saveProjects(projects)
+    storageCntrlr.saveSelectedProject(selectedProjectId)
+  }
+
   const init = () => {
     selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId)
     renderProjects(projects, selectedProjectId)
-    renderProjectView(getProject(selectedProjectId))
+
+    const project = getProject(selectedProjectId)
+    if (project) {
+      renderProjectView(project)
+    }
 
     bindAddProject((projectTitle) => {
       projects = projCntrlr.addProject(projects, { title: projectTitle })
@@ -54,9 +63,7 @@ export const appController = () => {
 
       const project = getProject(selectedProjectId)
       renderLists(project.lists)
-      console.log(project.id)
-      storageCntrlr.saveProjects(projects)
-      storageCntrlr.saveSelectedProject(selectedProjectId)
+      persistState()
     })
 
     bindRemoveProject((projectId) => {
@@ -84,8 +91,7 @@ export const appController = () => {
       selectedProjectId = projectId
       projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle)
       renderProjects(projects, projectId)
-      storageCntrlr.saveProjects(projects)
-      storageCntrlr.saveSelectedProject(selectedProjectId)
+      persistState()
     })
 
     bindAddList((listTitle) => {
@@ -95,8 +101,7 @@ export const appController = () => {
 
       project.lists = listCntrlr.addList(project.lists, { title: listTitle })
       renderProjectView(project)
-      storageCntrlr.saveProjects(projects)
-      storageCntrlr.saveSelectedProject(selectedProjectId)
+      persistState()
     })
 
     bindRemoveList((listId) => {
@@ -120,8 +125,7 @@ export const appController = () => {
         return list
       })
       renderLists(project.lists)
-      storageCntrlr.saveProjects(projects)
-      storageCntrlr.saveSelectedProject(selectedProjectId)
+      persistState()
     })
 
     bindTodoModalActions(
@@ -141,8 +145,7 @@ export const appController = () => {
 
         list.todos = todoCntrlr.updateTodo(list.todos, todoId, updates)
         renderTodos(listId, list.todos)
-        storageCntrlr.saveProjects(projects)
-        storageCntrlr.saveSelectedProject(selectedProjectId)
+        persistState()
       }
     )
 
@@ -161,8 +164,7 @@ export const appController = () => {
 
       list.todos = todoCntrlr.toggleTodoStatus(list.todos, todoId)
       renderTodos(listId, list.todos)
-      storageCntrlr.saveProjects(projects)
-      storageCntrlr.saveSelectedProject(selectedProjectId)
+      persistState()
     })
   }
 
