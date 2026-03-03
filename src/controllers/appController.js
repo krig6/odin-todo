@@ -45,7 +45,9 @@ export const appController = () => {
   }
 
   const init = () => {
+    selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId)
     renderProjects(projects, selectedProjectId)
+    renderProjectView(getProject(selectedProjectId))
 
     bindAddProject((projectTitle) => {
       projects = projCntrlr.addProject(projects, { title: projectTitle })
@@ -56,6 +58,7 @@ export const appController = () => {
       renderLists(project.lists)
       console.log(project.id)
       storageCntrlr.saveProjects(projects)
+      storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
     bindRemoveProject((projectId) => {
@@ -76,6 +79,7 @@ export const appController = () => {
 
       const project = getProject(selectedProjectId)
       renderProjectView(project)
+      storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
     bindUpdateProjectTitle((projectId, newTitle) => {
@@ -83,6 +87,7 @@ export const appController = () => {
       projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle)
       renderProjects(projects, projectId)
       storageCntrlr.saveProjects(projects)
+      storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
     bindAddList((listTitle) => {
@@ -93,6 +98,7 @@ export const appController = () => {
       project.lists = listCntrlr.addList(project.lists, { title: listTitle })
       renderProjectView(project)
       storageCntrlr.saveProjects(projects)
+      storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
     bindRemoveList((listId) => {
@@ -117,6 +123,7 @@ export const appController = () => {
       })
       renderLists(project.lists)
       storageCntrlr.saveProjects(projects)
+      storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
     bindTodoModalActions(
@@ -127,6 +134,7 @@ export const appController = () => {
         list.todos = todoCntrlr.addTodo(list.todos, todoData)
         renderTodos(listId, list.todos)
         storageCntrlr.saveProjects(projects)
+        storageCntrlr.saveSelectedProject(selectedProjectId)
       },
 
       (listId, todoId, updates) => {
@@ -136,6 +144,7 @@ export const appController = () => {
         list.todos = todoCntrlr.updateTodo(list.todos, todoId, updates)
         renderTodos(listId, list.todos)
         storageCntrlr.saveProjects(projects)
+        storageCntrlr.saveSelectedProject(selectedProjectId)
       }
     )
 
@@ -155,6 +164,7 @@ export const appController = () => {
       list.todos = todoCntrlr.toggleTodoStatus(list.todos, todoId)
       renderTodos(listId, list.todos)
       storageCntrlr.saveProjects(projects)
+      storageCntrlr.saveSelectedProject(selectedProjectId)
     })
   }
 

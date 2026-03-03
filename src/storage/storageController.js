@@ -7,5 +7,13 @@ export const storageController = () => {
     return JSON.parse(localStorage.getItem('projects'));
   }
 
-  return { saveProjects, loadProjects }
+  const saveSelectedProject = (selectedProjectId) => {
+    localStorage.setItem('selectedProject', JSON.stringify(selectedProjectId))
+  }
+
+  const loadSelectedProject = () => {
+    return JSON.parse(localStorage.getItem('selectedProject'))
+  }
+
+  return { saveProjects, loadProjects, saveSelectedProject, loadSelectedProject }
 }
