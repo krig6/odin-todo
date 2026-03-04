@@ -9,10 +9,9 @@ export const renderProjects = (projects, selectedId) => {
     li.dataset.id = project.id
     li.classList.add('project-item')
 
-    const titleBtn = document.createElement('button')
-    titleBtn.textContent = project.title
-    titleBtn.classList.add('project-item__title')
-    titleBtn.type = 'button'
+    const titleSpan = document.createElement('span')
+    titleSpan.textContent = project.title
+    titleSpan.classList.add('project-item__title')
 
     const editTitleBtn = document.createElement('button')
     editTitleBtn.classList.add('project-item__edit')
@@ -30,7 +29,11 @@ export const renderProjects = (projects, selectedId) => {
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
 
-    li.append(titleBtn, editTitleBtn, deleteBtn)
+    const controlsContainer = document.createElement('div')
+    controlsContainer.classList.add('project-item__controls')
+    controlsContainer.append(editTitleBtn, deleteBtn)
+
+    li.append(titleSpan, controlsContainer)
 
     if (project.id === selectedId) {
       li.classList.add('project-item--selected')
