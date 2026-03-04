@@ -34,27 +34,39 @@ export const renderLists = (lists) => {
 }
 
 export const bindAddList = (callbackFunction) => {
-  const form = document.getElementById('add-list-form')
-  const title = document.getElementById('list-input')
+  const addListBtn = document.getElementById('list-add-btn');
+  const listModal = document.getElementById('list-modal');
+  const listForm = document.getElementById('list-form');
+  const listInput = document.getElementById('list-title-input');
+  const cancelBtn = document.getElementById('list-cancel-btn');
 
-  if (!form || !title) return
+  if (!addListBtn || !listModal || !listForm || !listInput) return;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const value = title.value.trim()
+  addListBtn.onclick = () => {
+    listInput.value = '';
+    listModal.showModal();
+    listInput.focus();
+  };
+
+  cancelBtn.onclick = () => listModal.close();
+
+  listForm.onsubmit = (e) => {
+    e.preventDefault();
+    const value = listInput.value.trim();
 
     if (isListTitleTaken(value)) {
-      alert('This project title already exists.')
-      title.select()
-      return
+      alert('This list title already exists.');
+      listInput.select();
+      return;
     }
 
     if (value !== '') {
-      callbackFunction(value)
-      title.value = ''
+      callbackFunction(value);
+      listModal.close();
+      listInput.value = '';
     }
-  })
-}
+  };
+};
 
 export const bindRemoveList = (callbackFunction) => {
   listContainer.addEventListener('click', (e) => {

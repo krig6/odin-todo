@@ -57,6 +57,22 @@
       </form>
     </dialog>
 
+    <dialog id="list-modal" class="list-modal">
+      <form id="list-form" class="list-modal__form">
+        <h3 id="list-modal-title" class="list-modal__title">Add List</h3>
+
+        <div class="list-modal__field">
+          <label for="list-title-input" class="list-modal__label">TITLE</label>
+          <input type="text" id="list-title-input" class="list-modal__input" placeholder="New list..." required />
+        </div>
+
+        <div class="list-modal__action-buttons">
+          <button type="button" id="list-cancel-btn" class="list-modal__cancel-btn">Cancel</button>
+          <button type="submit" id="list-confirm-btn" class="list-modal__confirm-btn">Confirm</button>
+        </div>
+      </form>
+    </dialog>
+
     <main id="content" class="app__main">
 
       <div class="list-view__header">
