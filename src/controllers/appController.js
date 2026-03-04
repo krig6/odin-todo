@@ -47,6 +47,11 @@ export const appController = () => {
     storageCntrlr.saveSelectedProject(selectedProjectId)
   }
 
+  const hideProjectPanel = () => {
+    const projectPanel = document.getElementById('project-panel')
+    if (projectPanel) projectPanel.classList.remove('active')
+  }
+
   const init = () => {
     selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId)
     renderProjects(projects, selectedProjectId)
@@ -64,8 +69,7 @@ export const appController = () => {
         selectedProjectId = projects[projects.length - 1].id
         renderProjects(projects, selectedProjectId)
 
-        const projectPanel = document.getElementById('project-panel')
-        if (projectPanel) projectPanel.classList.remove('active')
+        hideProjectPanel()
 
         const project = getProject(selectedProjectId)
         renderLists(project.lists)
@@ -94,7 +98,7 @@ export const appController = () => {
     bindSelectProject((projectId) => {
       selectedProjectId = projectId
       renderProjects(projects, projectId)
-
+      hideProjectPanel()
       const project = getProject(selectedProjectId)
       renderProjectView(project)
       storageCntrlr.saveSelectedProject(selectedProjectId)

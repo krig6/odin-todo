@@ -125,6 +125,9 @@ export const bindSelectProject = (callbackFunction) => {
     if (!li) return
     if (e.target.closest('.project-item__delete')) return
 
+    if (e.target.closest('.project-item__edit')) return
+    if (e.target.closest('.project-item__delete')) return
+
     if (e.detail > 1) return
     const projectId = li.dataset.id
     callbackFunction(projectId)
