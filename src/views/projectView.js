@@ -1,34 +1,43 @@
 const projectList = document.getElementById('project-list')
 
 export const renderProjects = (projects, selectedId) => {
-  projectList.innerHTML = ''
+  const fragment = document.createDocumentFragment()
 
+  projectList.innerHTML = ''
   projects.forEach(project => {
     const li = document.createElement('li')
     li.dataset.id = project.id
     li.classList.add('project-item')
 
-    const titleSpan = document.createElement('span')
-    titleSpan.textContent = project.title
-    titleSpan.classList.add('project-item__title')
+    const titleBtn = document.createElement('button')
+    titleBtn.textContent = project.title
+    titleBtn.classList.add('project-item__title')
+    titleBtn.type = 'button'
+
+    const editTitleBtn = document.createElement('button')
+    editTitleBtn.classList.add('project-item__edit')
+    editTitleBtn.type = 'button'
+
+    const editIcon = document.createElement('i')
+    editIcon.classList.add('bx', 'bx-edit')
+    editTitleBtn.appendChild(editIcon)
 
     const deleteBtn = document.createElement('button')
     deleteBtn.classList.add('project-item__delete')
+    deleteBtn.type = 'button'
 
     const deleteIcon = document.createElement('i')
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
 
-    li.append(titleSpan, deleteBtn)
+    li.append(titleBtn, editTitleBtn, deleteBtn)
 
     if (project.id === selectedId) {
-      li.classList.add('project-item__selected')
-    } else {
-      li.classList.remove('project-item__selected')
+      li.classList.add('project-item--selected')
     }
-
-    projectList.appendChild(li)
+    fragment.appendChild(li)
   })
+  projectList.appendChild(fragment)
 }
 
 export const bindAddProject = (callbackFunction) => {
