@@ -1,0 +1,70 @@
+/* ------------------------------ */
+/*  Font Family                   */
+/* ------------------------------ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ------------------------------ */
+/*  Global Reset & Base Styling   */
+/* ------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  list-style-type: none;
+}
+
+html {
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  background-color: #eaeaea;
+  margin: 1rem;
+  height: 100vh;
+}
+
+/* ------------------------------ */
+/*  Typography                    */
+/* ------------------------------ */
+h1,
+h2,
+h3 {
+  font-family: "Montserrat", sans-serif;
+}
+
+.app__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* ------------------------------ */
+/*  App Header                    */
+/* ------------------------------ */
+.app__header {
+  align-items: center;
+  background-color: #607d8b;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+}
+
+.app__panel-open-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1.4rem;
+  transition: color 0.2s;
+  display: flex;
+}
+
+.app__panel-open-btn:hover {
+  color: #cfd8dc;
+}
