@@ -29,12 +29,14 @@
   padding: 1rem;
 }
 
-.project-panel__title {
+.project-panel__title,
+.list-view__title {
   font-size: 1.2rem;
   font-weight: 600;
 }
 
-.project-panel__add-btn {
+.project-panel__add-btn,
+.list-view__add-btn {
   align-items: center;
   background-color: #78909c;
   border: none;
@@ -49,7 +51,8 @@
   transition: background-color 0.2s ease;
 }
 
-.project-panel__add-btn:hover {
+.project-panel__add-btn:hover,
+.list-view__add-btn:hover {
   background-color: #546e7a;
 }
 
@@ -65,14 +68,18 @@
   color: #e53935;
 }
 
-.project-panel__body {
+.project-panel__body,
+.list-view__header {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
 }
 
-.project-panel__add-btn i {
+.project-panel__add-btn i,
+.list-view__add-btn i {
   font-size: 1.1rem;
 }
 

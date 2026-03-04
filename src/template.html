@@ -59,10 +59,13 @@
 
     <main id="content" class="app__main">
 
-      <form id="add-list-form" class="list-panel__form">
-        <input type="text" id="list-input" class="list-panel__input" placeholder="New list..." required />
-        <button type="submit" class="list-form__btn">Add List</button>
-      </form>
+      <div class="list-view__header">
+        <h2 id="project-title" class="list-view__title">Project Title</h2>
+        <button id="list-add-btn" class="list-view__add-btn">
+          <i class="bx bx-plus"></i>
+          Add List
+        </button>
+      </div>
 
       <ul id="list-container" class="list-container"></ul>
     </main>
