@@ -52,6 +52,13 @@ export const appController = () => {
     if (projectPanel) projectPanel.classList.remove('active')
   }
 
+  const updateListViewHeader = (project) => {
+    const titleEl = document.getElementById('project-title');
+    if (titleEl && project) {
+      titleEl.textContent = project.title;
+    }
+  };
+
   const init = () => {
     selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId)
     renderProjects(projects, selectedProjectId)
@@ -73,12 +80,15 @@ export const appController = () => {
 
         const project = getProject(selectedProjectId)
         renderLists(project.lists)
+        updateListViewHeader(project)
         persistState()
       },
       (projectId, newTitle) => {
         selectedProjectId = projectId
         projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle)
         renderProjects(projects, projectId)
+        const project = getProject(selectedProjectId)
+        updateListViewHeader(project)
         persistState()
       }
     )
@@ -101,6 +111,7 @@ export const appController = () => {
       hideProjectPanel()
       const project = getProject(selectedProjectId)
       renderProjectView(project)
+      updateListViewHeader(project)
       storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
