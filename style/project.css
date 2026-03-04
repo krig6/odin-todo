@@ -122,3 +122,127 @@
 .project-item__delete:hover {
   color: #d32f2f;
 }
+
+/* ------------------------------ */
+/*  Project Modal                 */
+/* ------------------------------ */
+.project-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background: linear-gradient(135deg, #eceff1, #f5f5f5);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  font-family: "Inter", sans-serif;
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: 200;
+}
+
+.project-modal[open] {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.project-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.project-modal__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #37474f;
+  text-align: center;
+}
+
+.project-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.project-modal__label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #607d8b;
+}
+
+.project-modal__input {
+  padding: 20px 5px 0px 7px;
+  border-radius: 8px;
+  border: 1px solid #b0bec5;
+  font-size: 1rem;
+  width: 100%;
+  font-family: "Inter", sans-serif;
+  color: #37474f;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  height: 55px;
+  outline: none;
+}
+
+.project-modal__input:focus {
+  border-color: #607d8b;
+  box-shadow: 0 0 6px rgba(96, 125, 139, 0.3);
+  outline: none;
+}
+
+.project-modal__action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.project-modal__cancel-btn,
+.project-modal__confirm-btn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.project-modal__cancel-btn {
+  background-color: #cfd8dc;
+  color: #37474f;
+}
+
+.project-modal__cancel-btn:hover {
+  background-color: #b0bec5;
+  transform: translateY(-2px);
+}
+
+.project-modal__confirm-btn {
+  background-color: #607d8b;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(96, 125, 139, 0.4);
+}
+
+.project-modal__confirm-btn:hover {
+  background-color: #455a64;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(69, 90, 100, 0.5);
+}
+
+.project-modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(1px);
+}
+
+.project-modal__label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  position: absolute;
+  opacity: 0.9;
+  padding: 0.5rem;
+  letter-spacing: 0.18em;
+  pointer-events: none;
+}
