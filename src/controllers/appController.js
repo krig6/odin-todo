@@ -66,6 +66,7 @@ export const appController = () => {
     const project = getProject(selectedProjectId)
     if (project) {
       renderProjectView(project)
+      updateListViewHeader(project)
     }
 
     bindProjectPanelToggle()
