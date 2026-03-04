@@ -28,16 +28,34 @@
         </button>
       </header>
 
-      <form id="add-project-form" class="project-panel__form">
-        <input type="text" id="project-input" class="project-panel__input" placeholder="New project..." required />
-        <button type="submit" class="project-form__btn">Add Project</button>
-      </form>
+      <div class="project-panel__body">
+        <button id="project-add-btn" class="project-panel__add-btn">
+          <i class="bx bx-plus"></i>
+          Add Project
+        </button>
 
-      <ul id="project-list" class="project-panel__list"></ul>
         <ul id="project-list" class="project-panel__list"></ul>
       </div>
 
     </aside>
+
+    <dialog id="project-modal" class="project-modal">
+
+      <form id="project-form" class="project-modal__form">
+        <h3 id="project-modal-title" class="project-modal__title">Add Project</h3>
+
+        <div class="project-modal__field">
+          <label for="project-title-input" class="project-modal__label">Title:</label>
+          <input type="text" id="project-title-input" class="project-modal__input" placeholder="New project..."
+            required />
+        </div>
+
+        <div class="project-modal__action-buttons">
+          <button type="button" id="project-cancel-btn" class="project-modal__cancel-btn">Cancel</button>
+          <button type="submit" id="project-confirm-btn" class="project-modal__confirm-btn">Confirm</button>
+        </div>
+      </form>
+    </dialog>
 
     <main id="content" class="app__main">
 

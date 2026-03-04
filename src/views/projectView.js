@@ -40,11 +40,48 @@ export const renderProjects = (projects, selectedId) => {
   projectList.appendChild(fragment)
 }
 
-export const bindAddProject = (callbackFunction) => {
-  const form = document.getElementById('add-project-form')
-  const title = document.getElementById('project-input')
+export const bindProjectModalActions = (addCallback, updateCallback) => {
+  const form = document.getElementById('project-form')
+  const title = document.getElementById('project-title-input')
+  const projectModal = document.getElementById('project-modal')
+  const addProjectButton = document.getElementById('project-add-btn')
+  const cancelButton = document.getElementById('project-cancel-btn')
+  const projectModalTitle = document.getElementById('project-modal-title')
 
-  if (!form || !title) return
+  if (!form || !title || !projectModal || !addProjectButton || !projectModalTitle) return
+
+  let currentMode = 'add'
+
+  addProjectButton.addEventListener('click', () => {
+    currentMode = 'add'
+    projectModalTitle.textContent = "Add Project"
+    form.reset()
+    projectModal.showModal()
+    delete form.dataset.id
+  })
+
+  projectList.addEventListener('click', (e) => {
+    if (e.target.closest('.project-item__edit')) {
+      const editTitleButton = e.target.closest('.project-item__edit')
+      if (!editTitleButton) return
+      e.stopPropagation()
+
+      currentMode = 'edit'
+      const projectItem = editTitleButton.closest('.project-item')
+      form.dataset.id = projectItem.dataset.id
+      title.value = projectItem.querySelector('.project-item__title')?.textContent || ''
+      projectModalTitle.textContent = "Edit Project Title"
+      title.select()
+      projectModal.showModal()
+    }
+  })
+
+  if (cancelButton) {
+    cancelButton.addEventListener('click', () => {
+      projectModal.close()
+      title.value = ''
+    })
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault()
@@ -56,9 +93,14 @@ export const bindAddProject = (callbackFunction) => {
       return
     }
 
-    if (value !== '') {
-      callbackFunction(value)
+    if (currentMode === 'add') {
+      addCallback(value)
       title.value = ''
+      projectModal.close()
+    } else if (currentMode === 'edit') {
+      const projectId = form.dataset.id
+      updateCallback(projectId, value)
+      projectModal.close()
     }
   })
 }
@@ -83,64 +125,6 @@ export const bindSelectProject = (callbackFunction) => {
     if (e.detail > 1) return
     const projectId = li.dataset.id
     callbackFunction(projectId)
-  })
-}
-
-export const bindUpdateProjectTitle = (callbackFunction) => {
-  projectList.addEventListener('dblclick', (e) => {
-    const li = e.target.closest('.project-item')
-    if (!li) return
-
-    const projectId = li.dataset.id
-    const titleSpan = li.querySelector('.project-item__title')
-    if (!titleSpan) return
-
-    const currentTitle = titleSpan.textContent
-    const input = document.createElement('input')
-    titleSpan.replaceWith(input)
-    input.type = 'text'
-    input.value = currentTitle
-    input.focus()
-    input.select()
-
-    let isEditing = true
-
-    const finishedEditing = (save) => {
-      if (!isEditing) return
-      isEditing = false
-
-      const newTitle = input.value.trim()
-      if (save && newTitle !== '' && newTitle !== currentTitle) {
-        if (isProjectTitleTaken(newTitle, titleSpan)) {
-          alert('Another project with this title already exists.')
-          input.focus()
-          isEditing = true
-          return
-        }
-        callbackFunction(projectId, newTitle)
-      }
-      if (input.parentNode) {
-        const newTitleSpan = document.createElement('span')
-        newTitleSpan.classList.add('project-item__title')
-        newTitleSpan.textContent = save && newTitle !== '' ? newTitle : currentTitle
-        input.replaceWith(newTitleSpan)
-      }
-    }
-
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        finishedEditing(true)
-      }
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        finishedEditing(false)
-      }
-    })
-
-    input.addEventListener('blur', () => {
-      finishedEditing(false)
-    })
   })
 }
 

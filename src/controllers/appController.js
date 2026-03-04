@@ -1,4 +1,4 @@
-import { renderProjects, bindAddProject, bindRemoveProject, bindSelectProject, bindUpdateProjectTitle, bindProjectPanelToggle } from "../views/projectView.js";
+import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectModalActions, bindProjectPanelToggle } from "../views/projectView.js";
 
 import { projectController } from "./projectController.js";
 
@@ -56,16 +56,28 @@ export const appController = () => {
       renderProjectView(project)
     }
 
-    bindAddProject((projectTitle) => {
-      projects = projCntrlr.addProject(projects, { title: projectTitle })
-      selectedProjectId = projects[projects.length - 1].id
-      renderProjects(projects, selectedProjectId)
-
-      const project = getProject(selectedProjectId)
-      renderLists(project.lists)
-      persistState()
-    })
     bindProjectPanelToggle()
+
+    bindProjectModalActions(
+      (projectTitle) => {
+        projects = projCntrlr.addProject(projects, { title: projectTitle })
+        selectedProjectId = projects[projects.length - 1].id
+        renderProjects(projects, selectedProjectId)
+
+        const projectPanel = document.getElementById('project-panel')
+        if (projectPanel) projectPanel.classList.remove('active')
+
+        const project = getProject(selectedProjectId)
+        renderLists(project.lists)
+        persistState()
+      },
+      (projectId, newTitle) => {
+        selectedProjectId = projectId
+        projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle)
+        renderProjects(projects, projectId)
+        persistState()
+      }
+    )
 
     bindRemoveProject((projectId) => {
       projects = projCntrlr.removeProject(projects, projectId)
@@ -86,13 +98,6 @@ export const appController = () => {
       const project = getProject(selectedProjectId)
       renderProjectView(project)
       storageCntrlr.saveSelectedProject(selectedProjectId)
-    })
-
-    bindUpdateProjectTitle((projectId, newTitle) => {
-      selectedProjectId = projectId
-      projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle)
-      renderProjects(projects, projectId)
-      persistState()
     })
 
     bindAddList((listTitle) => {
