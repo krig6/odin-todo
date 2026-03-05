@@ -54,9 +54,9 @@ export const appController = () => {
 
   const updateListViewHeader = (project) => {
     const titleEl = document.getElementById('project-title');
-    if (titleEl && project) {
-      titleEl.textContent = project.title;
-    }
+    if (!titleEl) return
+
+    titleEl.textContent = project ? project.title : "All slacking! Add a project first."
   };
 
   const getProjectCount = () => projects.length
@@ -100,9 +100,17 @@ export const appController = () => {
       projects = projCntrlr.removeProject(projects, projectId)
       renderProjects(projects)
 
-      if (selectedProjectId === projectId) {
-        selectedProjectId = null
-        renderLists([])
+      if (selectedProjectId === projectId && getProjectCount() !== 0) {
+        selectedProjectId = projects[0].id
+        const project = getProject(selectedProjectId)
+        renderProjectView(project)
+        updateListViewHeader(project)
+        renderProjects(projects, selectedProjectId)
+      } else {
+        selectedProjectId = null;
+        renderLists([]);
+        updateListViewHeader(null);
+        renderProjects(projects);
       }
 
       storageCntrlr.saveProjects(projects)
