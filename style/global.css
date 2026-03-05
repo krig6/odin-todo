@@ -68,3 +68,29 @@ h3 {
 .app__panel-open-btn:hover {
   color: #cfd8dc;
 }
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  +25% {
+    transform: rotate(-7deg);
+  }
+
+  +50% {
+    transform: rotate(7deg);
+  }
+
+  +75% {
+    transform: rotate(-7deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.shake {
+  animation: shake 0.8s infinite;
+}
