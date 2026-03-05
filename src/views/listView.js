@@ -33,22 +33,24 @@ export const renderLists = (lists) => {
 
 }
 
-export const bindAddList = (callbackFunction) => {
+export const bindOpenListModal = (callbackFunction) => {
+  const listModal = document.getElementById('list-modal');
+  const listInput = document.getElementById('list-title-input');
   const addListBtn = document.getElementById('list-add-btn');
+
+  if (!listModal || !listInput || !addListBtn) return;
+
+  addListBtn.onclick = () => callbackFunction(listModal, listInput)
+};
+
+export const bindListFormSubmit = (callbackFunction) => {
+  const cancelBtn = document.getElementById('list-cancel-btn');
   const listModal = document.getElementById('list-modal');
   const listForm = document.getElementById('list-form');
   const listInput = document.getElementById('list-title-input');
-  const cancelBtn = document.getElementById('list-cancel-btn');
-
-  if (!addListBtn || !listModal || !listForm || !listInput) return;
-
-  addListBtn.onclick = () => {
-    listInput.value = '';
-    listModal.showModal();
-    listInput.focus();
-  };
-
   cancelBtn.onclick = () => listModal.close();
+
+  if (!listModal || !listForm || !listInput) return
 
   listForm.onsubmit = (e) => {
     e.preventDefault();
@@ -66,7 +68,7 @@ export const bindAddList = (callbackFunction) => {
       listInput.value = '';
     }
   };
-};
+}
 
 export const bindRemoveList = (callbackFunction) => {
   listContainer.addEventListener('click', (e) => {

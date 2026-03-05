@@ -2,7 +2,7 @@ import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectModalA
 
 import { projectController } from "./projectController.js";
 
-import { renderLists, bindAddList, bindRemoveList, bindUpdateListTitle } from "../views/listView.js";
+import { renderLists, bindOpenListModal, bindRemoveList, bindUpdateListTitle, bindListFormSubmit } from "../views/listView.js";
 import { listController } from "./listController.js";
 
 import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from "../views/todoView.js";
@@ -58,6 +58,8 @@ export const appController = () => {
       titleEl.textContent = project.title;
     }
   };
+
+  const getProjectCount = () => projects.length
 
   const init = () => {
     selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId)
@@ -116,7 +118,14 @@ export const appController = () => {
       storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
-    bindAddList((listTitle) => {
+    bindOpenListModal((listModal, listInput) => {
+      if (getProjectCount() === 0) return
+      listInput.value = ''
+      listModal.showModal()
+      listInput.focus()
+    })
+
+    bindListFormSubmit((listTitle) => {
       if (!selectedProjectId) return
       const project = getProject(selectedProjectId)
       if (!project) return
