@@ -119,7 +119,10 @@ export const appController = () => {
     })
 
     bindOpenListModal((listModal, listInput) => {
-      if (getProjectCount() === 0) return
+      if (getProjectCount() === 0) {
+        alert('You must create a project before adding a list.')
+        return
+      }
       listInput.value = ''
       listModal.showModal()
       listInput.focus()
