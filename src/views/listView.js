@@ -9,6 +9,9 @@ export const renderLists = (lists) => {
     li.dataset.id = list.id
     li.classList.add('list-item')
 
+    const listHeader = document.createElement('div')
+    listHeader.classList.add('list-header')
+
     const titleSpan = document.createElement('span')
     titleSpan.textContent = list.title
     titleSpan.classList.add('list-item__title')
@@ -38,10 +41,18 @@ export const renderLists = (lists) => {
     todoContainer.dataset.listId = list.id
 
     const addTodoBtn = document.createElement('button')
-    addTodoBtn.textContent = '+ Add Todo'
     addTodoBtn.classList.add('list-item__add-todo')
 
-    li.append(titleSpan, controlsContainer, todoContainer, addTodoBtn)
+    const addTodoIcon = document.createElement('i')
+    addTodoIcon.classList.add('bx', 'bx-plus')
+
+    const addTodoBtnTextNode = document.createTextNode("Add Todo")
+
+    addTodoBtn.append(addTodoIcon, addTodoBtnTextNode)
+
+    listHeader.append(titleSpan, controlsContainer)
+
+    li.append(listHeader, todoContainer, addTodoBtn)
     fragment.appendChild(li)
   })
   listContainer.appendChild(fragment)
