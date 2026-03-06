@@ -1,19 +1,37 @@
 const listContainer = document.getElementById('list-container')
 
 export const renderLists = (lists) => {
-  listContainer.innerHTML = ''
+  const fragment = document.createDocumentFragment()
 
+  listContainer.innerHTML = ''
   lists.forEach(list => {
     const li = document.createElement('li')
     li.dataset.id = list.id
     li.classList.add('list-item')
 
+    const titleSpan = document.createElement('span')
+    titleSpan.textContent = list.title
+    titleSpan.classList.add('list-item__title')
+
+    const editTitleBtn = document.createElement('button')
+    editTitleBtn.classList.add('list-item__edit')
+    editTitleBtn.type = 'button'
+
+    const editIcon = document.createElement('i')
+    editIcon.classList.add('bx', 'bx-edit')
+    editTitleBtn.appendChild(editIcon)
+
     const deleteBtn = document.createElement('button')
     deleteBtn.classList.add('list-item__delete')
+    deleteBtn.type = 'button'
 
     const deleteIcon = document.createElement('i')
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
+
+    const controlsContainer = document.createElement('div')
+    controlsContainer.classList.add('list-item__controls')
+    controlsContainer.append(editTitleBtn, deleteBtn)
 
     const todoContainer = document.createElement('ul')
     todoContainer.classList.add('todo-container')
@@ -23,14 +41,10 @@ export const renderLists = (lists) => {
     addTodoBtn.textContent = '+ Add Todo'
     addTodoBtn.classList.add('list-item__add-todo')
 
-    const titleSpan = document.createElement('span')
-    titleSpan.textContent = list.title
-    titleSpan.classList.add('list-item__title')
-
-    li.append(titleSpan, deleteBtn, todoContainer, addTodoBtn)
-    listContainer.appendChild(li)
+    li.append(titleSpan, controlsContainer, todoContainer, addTodoBtn)
+    fragment.appendChild(li)
   })
-
+  listContainer.appendChild(fragment)
 }
 
 export const bindOpenListModal = (callbackFunction) => {
@@ -41,32 +55,62 @@ export const bindOpenListModal = (callbackFunction) => {
   if (!listModal || !listInput || !addListBtn) return;
 
   addListBtn.onclick = () => callbackFunction(listModal, listInput)
+
+  listContainer.addEventListener('click', (e) => {
+    if (e.target.closest('.list-item__edit')) {
+      const editTitleBtn = e.target.closest('.list-item__edit')
+      const listItem = editTitleBtn.closest('.list-item')
+      const title = listItem.querySelector('.list-item__title').textContent
+      listModal.dataset.id = listItem.dataset.id
+      listModal.dataset.mode = 'edit'
+      callbackFunction(listModal, listInput, title)
+    }
+  })
 };
 
-export const bindListFormSubmit = (callbackFunction) => {
+export const bindListFormSubmit = (addCallback, updateCallback) => {
   const cancelBtn = document.getElementById('list-cancel-btn');
   const listModal = document.getElementById('list-modal');
   const listForm = document.getElementById('list-form');
   const listInput = document.getElementById('list-title-input');
-  cancelBtn.onclick = () => listModal.close();
+
+  cancelBtn.onclick = () => {
+    listInput.value = ''
+    listModal.close();
+    listModal.dataset.id = ''
+    listModal.dataset.mode = 'add'
+  }
 
   if (!listModal || !listForm || !listInput) return
 
   listForm.onsubmit = (e) => {
     e.preventDefault();
+
     const value = listInput.value.trim();
+    if (!value) return
 
-    if (isListTitleTaken(value)) {
-      alert('This list title already exists.');
-      listInput.select();
-      return;
-    }
+    const mode = listModal.dataset.mode
+    const listId = listModal.dataset.id
 
-    if (value !== '') {
-      callbackFunction(value);
-      listModal.close();
-      listInput.value = '';
+    if (mode === 'edit') {
+      if (isListTitleTaken(value)) {
+        alert('This list title already exists.');
+        listInput.select();
+        return;
+      }
+      updateCallback(listId, value);
+    } else {
+      if (isListTitleTaken(value)) {
+        alert('This list title already exists.');
+        listInput.select();
+        return;
+      }
+      addCallback(value);
     }
+    listModal.close()
+    listModal.value = ''
+    listModal.dataset.mode = 'add'
+    listModal.dataset.id = ''
   };
 }
 
@@ -81,64 +125,18 @@ export const bindRemoveList = (callbackFunction) => {
   })
 }
 
-export const bindUpdateListTitle = (callbackFunction) => {
-  listContainer.addEventListener('dblclick', (e) => {
-    const li = e.target.closest('.list-item')
-    if (!li) return
-
-    const listId = li.dataset.id
-    const titleSpan = li.querySelector('.list-item__title')
-    if (!titleSpan) return
-
-    const currentTitle = titleSpan.textContent
-    const input = document.createElement('input')
-    titleSpan.replaceWith(input)
-    input.type = 'text'
-    input.value = currentTitle
-    input.focus()
-    input.select()
-
-    let isEditing = true
-
-    const finishedEditing = (save) => {
-      if (!isEditing) return
-      isEditing = false
-
-      const newTitle = input.value.trim()
-      if (save && newTitle !== '' && newTitle !== currentTitle) {
-        if (isListTitleTaken(newTitle, titleSpan)) {
-          alert('Another list with this title already exists.')
-          input.focus()
-          isEditing = true
-          return
-        }
-        callbackFunction(listId, newTitle)
-      }
-
-      if (input.parentNode) {
-        const newTitleSpan = document.createElement('span')
-        newTitleSpan.classList.add('list-item__title')
-        newTitleSpan.textContent = save && newTitle !== '' ? newTitle : currentTitle
-        input.replaceWith(newTitleSpan)
-      }
-    }
-
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        finishedEditing(true)
-      }
-      if (e.key === 'Escape') {
-        e.preventDefault()
-        finishedEditing(false)
-      }
-    })
-
-    input.addEventListener('blur', () => {
-      finishedEditing(false)
-    })
-  })
-}
+// export const bindUpdateListTitle = (callbackFunction) => {
+//   const form = docu
+//   listContainer.addEventListener('click', (e) => {
+//     if (e.target.closest('.list-item__edit')) {
+//       const editTitleBtn = e.target.closest('.list-item__edit')
+//       if (!editTitleBtn) return
+//       e.stopPropagation()
+//
+//
+//     }
+//   })
+// }
 
 const isListTitleTaken = (title, currentSpan = null) => {
   const existingTitle = Array.from(document.querySelectorAll('.list-item__title'))

@@ -2,7 +2,7 @@ import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectModalA
 
 import { projectController } from "./projectController.js";
 
-import { renderLists, bindOpenListModal, bindRemoveList, bindUpdateListTitle, bindListFormSubmit } from "../views/listView.js";
+import { renderLists, bindOpenListModal, bindRemoveList, bindListFormSubmit } from "../views/listView.js";
 import { listController } from "./listController.js";
 
 import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from "../views/todoView.js";
@@ -126,25 +126,40 @@ export const appController = () => {
       storageCntrlr.saveSelectedProject(selectedProjectId)
     })
 
-    bindOpenListModal((listModal, listInput) => {
+    bindOpenListModal((listModal, listInput, listTitle) => {
       if (getProjectCount() === 0) {
         alert('You must create a project before adding a list.')
         return
       }
-      listInput.value = ''
+      listInput.value = listTitle || ''
       listModal.showModal()
       listInput.focus()
     })
 
-    bindListFormSubmit((listTitle) => {
-      if (!selectedProjectId) return
-      const project = getProject(selectedProjectId)
-      if (!project) return
+    bindListFormSubmit(
+      (listTitle) => {
+        if (!selectedProjectId) return
+        const project = getProject(selectedProjectId)
+        if (!project) return
 
-      project.lists = listCntrlr.addList(project.lists, { title: listTitle })
-      renderProjectView(project)
-      persistState()
-    })
+        project.lists = listCntrlr.addList(project.lists, { title: listTitle })
+        renderProjectView(project)
+        persistState()
+      },
+      (listId, newTitle) => {
+        const project = getProject(selectedProjectId)
+        if (!project) return
+
+        project.lists = project.lists.map(list => {
+          if (list.id === listId) {
+            return { ...list, title: newTitle }
+          }
+          return list
+        })
+        renderLists(project.lists)
+        persistState()
+      }
+    )
 
     bindRemoveList((listId) => {
       if (!selectedProjectId) return
@@ -154,20 +169,6 @@ export const appController = () => {
       project.lists = listCntrlr.removeList(project.lists, listId)
       renderProjectView(project)
       storageCntrlr.saveProjects(projects)
-    })
-
-    bindUpdateListTitle((listId, newTitle) => {
-      const project = getProject(selectedProjectId)
-      if (!project) return
-
-      project.lists = project.lists.map(list => {
-        if (list.id === listId) {
-          return { ...list, title: newTitle }
-        }
-        return list
-      })
-      renderLists(project.lists)
-      persistState()
     })
 
     bindTodoModalActions(
