@@ -156,7 +156,7 @@ export const appController = () => {
           }
           return list
         })
-        renderLists(project.lists)
+        renderProjectView(project)
         persistState()
       }
     )
