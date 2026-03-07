@@ -8,8 +8,9 @@ export const renderTodos = (listId, todos) => {
     const li = document.createElement('li')
     li.dataset.id = todo.id
     li.classList.add('todo-item', `todo-item--${todo.priority}`)
+    li.dataset.status = todo.status === 'completed' ? 'Completed' : 'In Progress'
 
-    const title = document.createElement('h3')
+    const title = document.createElement('span')
     title.textContent = todo.title
     title.classList.add('todo-item__title')
 
@@ -27,6 +28,9 @@ export const renderTodos = (listId, todos) => {
     priority.textContent = todo.priority
     priority.classList.add('todo-item__priority')
 
+    const todoHeader = document.createElement('div')
+    todoHeader.classList.add('todo-header')
+
     const statusBtn = document.createElement('button')
     statusBtn.classList.add('todo-item__status')
 
@@ -42,7 +46,13 @@ export const renderTodos = (listId, todos) => {
     deleteIcon.classList.add('bx', 'bx-x')
     deleteBtn.appendChild(deleteIcon)
 
-    li.append(deleteBtn, title, description, dueDate, priority, statusBtn)
+    const controlsContainer = document.createElement('div')
+    controlsContainer.classList.add('todo-item__controls')
+    controlsContainer.append(statusBtn, deleteBtn)
+
+    todoHeader.append(title, controlsContainer)
+
+    li.append(todoHeader, description, dueDate, priority)
     todoContainer.appendChild(li)
   })
 }
@@ -115,7 +125,7 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
       descriptionInput.value = todoItem.querySelector('.todo-item__description')?.textContent || ''
       const existingDueDate = todoItem.querySelector('.todo-item__due-date')?.dateTime || ''
       dueDateInput.value = existingDueDate ? existingDueDate.split('T')[0] : ''
-      priorityInput.value = todoItem.querySelector('.todo-item__priority')?.textContent || ''
+      priorityInput.value = todoItem.querySelector('.todo-item__priority')?.textContent
 
       todoModal.showModal()
       titleInput.focus()
@@ -158,7 +168,6 @@ export const bindToggleTodoStatus = (callbackFunction) => {
 
     statusIcon.classList.remove(isCompleted ? 'bx-check-circle' : 'bx-clock-dashed-half')
     statusIcon.classList.add(isCompleted ? 'bx-clock-dashed-half' : 'bx-check-circle')
-
 
     const todoContainer = statusIcon.closest('.todo-container')
     const todo = statusIcon.closest('.todo-item')
