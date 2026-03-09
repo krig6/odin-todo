@@ -2,6 +2,7 @@
 /*  LIST VIEW - HEADER                                         */
 /* ============================================================ */
 .list-view__header {
+  display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 0.5rem;
@@ -10,6 +11,10 @@
 
 .list-view__title {
   text-align: center;
+}
+
+.list-container {
+  padding: 0.5rem;
 }
 
 /* ============================================================ */
@@ -22,4 +27,28 @@
 
 .list-item__title {
   flex: 1;
+}
+
+@media (min-width: 768px) {
+
+  .list-view__add-btn,
+  .list-item__add-todo {
+    width: clamp(250px, 25vw, 50%);
+    align-self: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .list-container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .list-view__header {
+    border-bottom: 1px solid #d0d7de;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
 }
