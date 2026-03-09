@@ -86,6 +86,7 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
   const descriptionInput = document.getElementById('todo-input-description')
   const dueDateInput = document.getElementById('todo-input-due-date')
   const priorityInput = document.getElementById('todo-input-priority')
+  const cancelBtn = document.getElementById('todo-cancel-btn')
 
   let currentMode = 'add'
   let todoId = null
@@ -131,6 +132,12 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
       titleInput.focus()
     }
   })
+
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      todoModal.close()
+    })
+  }
 
   form.addEventListener('submit', (e) => {
     e.preventDefault()
