@@ -23,8 +23,8 @@
     <aside id="project-panel" class="project-panel">
       <header class="project-panel__header">
         <h2 class="project-panel__title">Projects</h2>
-        <button id="project-panel-close-btn" class="project-panel__close-btn">
-          <i class="bx bx-x" /></i>
+        <button id="project-panel-close-btn" class="project-panel__toggle-btn">
+          <i class="bx bx-chevron-left" /></i>
         </button>
       </header>
 
@@ -88,12 +88,7 @@
 
     <dialog id="todo-modal" class="modal">
       <form id="todo-form" class="todo-modal__form">
-        <header class="todo-modal__header">
-          <h3 class="todo-modal__title">Add Todo</h3>
-          <button type="button" class="todo-modal__close">
-            <i class="bx bx-x"></i>
-          </button>
-        </header>
+        <h3 class="todo-modal__title">Add Todo</h3>
 
         <div class="todo-modal__input-group">
           <label for="todo-input-title" class="todo-modal__label">Title:</label>
@@ -119,7 +114,10 @@
           </select>
         </div>
 
-        <button type="submit" class="todo-modal__confirm-btn">Confirm</button>
+        <div class="todo-modal__action-buttons">
+          <button type="button" id="todo-cancel-btn" class="todo-modal__cancel-btn">Cancel</button>
+          <button type="submit" class="todo-modal__confirm-btn">Confirm</button>
+        </div>
       </form>
     </dialog>
   </div>
