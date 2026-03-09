@@ -52,7 +52,7 @@ export const renderLists = (lists) => {
 
     listHeader.append(titleSpan, controlsContainer)
 
-    li.append(listHeader, todoContainer, addTodoBtn)
+    li.append(listHeader, addTodoBtn, todoContainer)
     fragment.appendChild(li)
   })
   listContainer.appendChild(fragment)
