@@ -1,14 +1,11 @@
 /* ============================================================ */
-/*  TODO CONTAINER                                             */
+/*  TODO ITEMS & CONTAINER                                     */
 /* ============================================================ */
 .todo-container {
   display: flex;
   flex-direction: column;
 }
 
-/* ============================================================ */
-/*  TODO ITEMS - BASE                                          */
-/* ============================================================ */
 .todo-item {
   flex-direction: column;
   gap: 0.5rem;
@@ -16,48 +13,17 @@
   cursor: pointer;
 }
 
-.todo-item::after {
-  content: attr(data-status);
-  position: absolute;
-  right: 50%;
-  transform: translateX(50%) translateY(50%);
-  top: auto;
-  background-color: #333;
-  color: #fff;
-  font-size: 0.7rem;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 10;
-}
-
-.todo-item:hover::after {
-  opacity: 1;
-}
-
-/* ============================================================ */
-/*  TODO ITEMS - DESCRIPTION                                   */
-/* ============================================================ */
 .todo-item__description {
   font-size: 0.875rem;
   color: #37474f;
   line-height: 1.2rem;
 }
 
-/* ============================================================ */
-/*  TODO ITEMS - DUE DATE                                      */
-/* ============================================================ */
 .todo-item__due-date {
   font-size: 0.75rem;
   color: #999;
 }
 
-/* ============================================================ */
-/*  TODO ITEMS - PRIORITY                                      */
-/* ============================================================ */
 .todo-item__priority {
   font-size: 0.75rem;
   font-weight: 600;
@@ -81,9 +47,6 @@
   background-color: #388e3c;
 }
 
-/* ============================================================ */
-/*  TODO ITEMS - STATUS & DELETE                               */
-/* ============================================================ */
 .todo-item__status,
 .todo-item__delete {
   position: relative;
@@ -94,8 +57,29 @@
   font-weight: 900;
 }
 
+.todo-item::after {
+  content: attr(data-status);
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%) translateY(50%);
+  background-color: #333;
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.todo-item:hover::after {
+  opacity: 1;
+}
+
 /* ============================================================ */
-/*  TODO MODAL - INPUT GROUPS                                  */
+/*  TODO MODAL                                                 */
 /* ============================================================ */
 .todo-modal__input-group,
 .todo-modal__select-group {
@@ -116,9 +100,6 @@
   pointer-events: none;
 }
 
-/* ============================================================ */
-/*  TODO MODAL - TEXTAREA                                      */
-/* ============================================================ */
 .todo-modal__textarea {
   padding: 25px 5px 0px 7px;
   resize: vertical;
