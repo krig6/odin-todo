@@ -136,19 +136,6 @@ export const bindRemoveList = (callbackFunction) => {
   })
 }
 
-// export const bindUpdateListTitle = (callbackFunction) => {
-//   const form = docu
-//   listContainer.addEventListener('click', (e) => {
-//     if (e.target.closest('.list-item__edit')) {
-//       const editTitleBtn = e.target.closest('.list-item__edit')
-//       if (!editTitleBtn) return
-//       e.stopPropagation()
-//
-//
-//     }
-//   })
-// }
-
 const isListTitleTaken = (title, currentSpan = null) => {
   const existingTitle = Array.from(document.querySelectorAll('.list-item__title'))
     .filter(span => span !== currentSpan)
