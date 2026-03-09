@@ -1,0 +1,54 @@
+/* ============================================================ */
+/*  PROJECT PANEL & SIDEBAR - MAIN CONTAINER                  */
+/* ============================================================ */
+.project-panel {
+  background-color: #eceff1;
+  box-shadow: 3px 0 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: -320px;
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+  transition: left 0.3s ease;
+}
+
+.project-panel.active {
+  left: 0;
+}
+
+/* ============================================================ */
+/*  PROJECT PANEL - HEADER                                     */
+/* ============================================================ */
+.project-panel__header {
+  border-bottom: 1px solid #b0bec5;
+  padding: 1rem;
+}
+
+.project-panel__toggle-btn {
+  font-size: 1.5rem;
+}
+
+/* ============================================================ */
+/*  PROJECT PANEL - BODY                                       */
+/* ============================================================ */
+.project-panel__body {
+  padding: 0.5rem 1rem;
+}
+
+/* ============================================================ */
+/*  PROJECT ITEMS                                              */
+/* ============================================================ */
+.project-item {
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.project-item--selected {
+  background-color: #cfd8dc;
+}

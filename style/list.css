@@ -1,0 +1,25 @@
+/* ============================================================ */
+/*  LIST VIEW - HEADER                                         */
+/* ============================================================ */
+.list-view__header {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.list-view__title {
+  text-align: center;
+}
+
+/* ============================================================ */
+/*  LIST ITEMS                                                 */
+/* ============================================================ */
+.list-item {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.list-item__title {
+  flex: 1;
+}
