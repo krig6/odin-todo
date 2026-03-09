@@ -44,6 +44,13 @@ h3 {
 /* ============================================================ */
 /*  APP HEADER                                                 */
 /* ============================================================ */
+.app {
+  background: #f7f9fa;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
 .app__header {
   align-items: center;
   background-color: #607d8b;
@@ -52,6 +59,8 @@ h3 {
   display: flex;
   justify-content: space-between;
   padding: 1rem 1.5rem;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
 
 .app__panel-open-btn {
@@ -108,10 +117,6 @@ h3 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.list-view__header {
-  display: flex;
 }
 
 /* ============================================================ */
@@ -285,17 +290,19 @@ h3 {
 .todo-item {
   display: flex;
   background: #ffffff;
-  border-radius: 6px;
   margin-bottom: 0.5rem;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   border: 1px solid #cfd8dc;
+  border-radius: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.project-item:hover,
 .list-item:hover,
 .todo-item:hover {
-  background: #f5f7f8;
-  border-color: #b0bec5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-color: #607d8b;
 }
 
 /* ============================================================ */
@@ -345,22 +352,7 @@ h3 {
 /*  SHARED - ADD BUTTONS                                       */
 /* ============================================================ */
 .project-panel__add-btn,
-.list-item__add-todo {
-  align-items: center;
-  background-color: #78909c;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  font-weight: 500;
-  gap: 0.4rem;
-  justify-content: center;
-  padding: 0.6rem 1rem;
-  transition: background-color 0.2s ease;
-  margin-bottom: 0.5rem;
-}
-
+.list-item__add-todo,
 .list-view__add-btn {
   align-items: center;
   background-color: #78909c;
@@ -387,4 +379,34 @@ h3 {
 .list-item__add-todo i,
 .list-view__add-btn i {
   font-size: 1.1rem;
+}
+
+@media (min-width: 1024px) {
+  .app {
+    padding: 1.5rem;
+  }
+
+  .app__header {
+    justify-content: center;
+    border-radius: 6px;
+  }
+
+  .app__body {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 1rem;
+  }
+
+  .app__main {
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    margin-top: 1rem;
+    padding: 0.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .app__panel-open-btn {
+    display: none;
+  }
 }
