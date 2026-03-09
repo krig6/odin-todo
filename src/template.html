@@ -20,24 +20,39 @@
       </button>
     </header>
 
-    <aside id="project-panel" class="project-panel">
-      <header class="project-panel__header">
-        <h2 class="project-panel__title">Projects</h2>
-        <button id="project-panel-close-btn" class="project-panel__toggle-btn">
-          <i class="bx bx-chevron-left" /></i>
-        </button>
-      </header>
+    <div class="app__body">
+      <aside id="project-panel" class="project-panel">
+        <header class="project-panel__header">
+          <h2 class="project-panel__title">Projects</h2>
+          <button id="project-panel-close-btn" class="project-panel__toggle-btn">
+            <i class="bx bx-chevron-left" /></i>
+          </button>
+        </header>
 
-      <div class="project-panel__body">
-        <button id="project-add-btn" class="project-panel__add-btn">
-          <i class="bx bx-plus"></i>
-          Add Project
-        </button>
+        <div class="project-panel__body">
+          <button id="project-add-btn" class="project-panel__add-btn">
+            <i class="bx bx-plus"></i>
+            Add Project
+          </button>
+          <ul id="project-list" class="project-panel__list"></ul>
+        </div>
 
-        <ul id="project-list" class="project-panel__list"></ul>
-      </div>
+      </aside>
 
-    </aside>
+      <main id="content" class="app__main">
+
+        <div class="list-view__header">
+          <h2 id="project-title" class="list-view__title">All slacking! Add a project first.</h2>
+          <button id="list-add-btn" class="list-view__add-btn">
+            <i class="bx bx-plus"></i>
+            Add List
+          </button>
+        </div>
+
+        <ul id="list-container" class="list-container"></ul>
+      </main>
+
+    </div>
 
     <dialog id="project-modal" class="project-modal">
 
@@ -72,19 +87,6 @@
         </div>
       </form>
     </dialog>
-
-    <main id="content" class="app__main">
-
-      <div class="list-view__header">
-        <h2 id="project-title" class="list-view__title">All slacking! Add a project first.</h2>
-        <button id="list-add-btn" class="list-view__add-btn">
-          <i class="bx bx-plus"></i>
-          Add List
-        </button>
-      </div>
-
-      <ul id="list-container" class="list-container"></ul>
-    </main>
 
     <dialog id="todo-modal" class="modal">
       <form id="todo-form" class="todo-modal__form">
