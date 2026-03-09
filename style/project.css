@@ -13,8 +13,8 @@
   width: 100%;
   z-index: 100;
   overflow-y: auto;
+  padding: 0.5rem;
   padding-bottom: 1rem;
-  transition: left 0.3s ease;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
 }
@@ -52,5 +52,24 @@
 }
 
 .project-item--selected {
-  background-color: #cfd8dc;
+  background-color: #90a4ae;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (min-width: 1024px) {
+  .project-panel {
+    position: relative !important;
+    transform: none !important;
+    width: auto;
+    height: auto;
+    transform: none;
+    box-shadow: none;
+    z-index: auto;
+    margin-top: 1rem;
+    border-radius: 6px;
+  }
+
+  .project-panel__toggle-btn {
+    display: none;
+  }
 }
