@@ -395,6 +395,7 @@ h3 {
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 1rem;
+    min-height: 85vh;
   }
 
   .app__main {
