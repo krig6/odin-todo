@@ -35,7 +35,7 @@ export const plugins = [
   new HTMLWebpackPlugin({
     filename: 'index.html',
     template: 'src/template.html',
-    title: 'Odin Todo',
+    title: 'Slacker Tracker',
     favicon: './src/assets/images/favicon/favicon.png'
   })
 ];
