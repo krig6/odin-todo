@@ -1,113 +1,72 @@
-# Webpack Template
+#  Project: Slacker Tracker
 
-Welcome to the Webpack Template! 🎉 This template provides a solid foundation for starting a modern JavaScript project with Webpack, including development and production setups.
+## Overview
+
+This **Todo** application, built as part of [The Odin Project](https://www.theodinproject.com/) curriculum, is implemented using **vanilla JavaScript** and follows a modular architecture inspired by the **Model–View–Controller (MVC)** pattern. The goal of the project is to practice separation of concerns, maintainable structure, and state-driven UI updates without relying on frameworks. The app stores all projects, lists, and todos in **localStorage**, ensuring that your data persists across browser sessions.
+
+[Slacker Tracker](https://krig6.github.io/odin-todo/) - Track your tasks… or your slacking.
+
+## Screenshots
+
+![Todo List - Desktop View](./src/assets/images/screenshots/screenshot-1.png)
+![Todo List - Create Project Modal](./src/assets/images/screenshots/screenshot-2.png)
+![Todo List - Create List Modal](./src/assets/images/screenshots/screenshot-3.png)
+![Todo List - Create Todo Modal](./src/assets/images/screenshots/screenshot-4.png)
+
+## Technologies Used
+
+- **HTML5** – Semantic markup for structured content.
+- **CSS3 / Flexbox & Grid** – Responsive layouts and card styling.
+- **JavaScript (ES6+)** – Dynamic DOM manipulation and state handling.
+- **Boxicons** – Icons for buttons, priorities, and actions.
+- **Dialog `<dialog>` element** – Modals for adding projects, lists, and todos.
+- **LocalStorage** – Persistent storage across browser sessions.
+- **Google Fonts** – Inter for body text and Montserrat for headings.
+- **Animations & Transitions** – Hover effects, card lifts, button transitions, and subtle shake animations.
+- **Favicon (.png)**
 
 ## Features
 
-- **Development and Production Builds:** Separate configurations for development (webpack.dev.js) and production (webpack.prod.js).
-- **CSS and Asset Handling:** Pre-configured loaders for CSS and image files.
-- **HTML Generation:** Automatically generates an HTML file with dynamic script inclusion using HtmlWebpackPlugin.
-- **Hot Module Replacement:** Enables fast, live updates during development.
-- **Optimized Output:** Uses content hashing for cache busting in production builds.
-- **ESLint Configuration:** Code quality and consistency enforcement
+- **Project Management** – Create, view, and select multiple projects. Each project contains its own lists and todos.
+- **List Management** – Add, edit, and delete lists within a project. Lists act as categories for your todos.
+- **Todo Items** – Create todos with:
+  - **Title**
+  - **Description**
+  - **Due date**
+  - **Priority**: High, Medium, Low (color-coded: red, orange, green)
+  - **Status**: Mark as completed or in progress, with hover tooltip showing current status.
+- **Persistent Storage** – All projects, lists, and todos are stored in **localStorage**, so data persists across browser sessions.
+- **Modals & Forms** – Add or edit projects, lists, and todos via accessible, animated dialog modals.
+- **Responsive Layout** – Works on mobile and desktop using **Flexbox** and **CSS Grid**.
+- **Interactive UI** – Hover effects and subtle card lifts for projects, lists, and todos.
+- **Animations** – Buttons shake or lift on hover for visual feedback.
+- **Iconography** – Boxicons used for buttons, priorities, and actions.
+- **Accessibility Enhancements** – Clear focus states, large click/tap targets, and labels for forms.
 
-## Getting Started
+## Learning Path
 
-Follow these steps to create a new project using this template:
+Building this **Todo** app felt like following a small roadmap for myself. I wanted to try using the *MVC pattern*, so I started with the models, then controllers, and finally the views. I’m still learning, but having this structure made it easier to see how the pieces fit together, even if I sometimes had to backtrack or rethink things.
 
-### 1. Use this Template
+Styling for different screen sizes was an interesting challenge. In my [Odin Restaurant Page](https://krig6.github.io/odin-restaurant/) project for The Odin Project, I had to write a lot of media queries, which was quite tedious and tricky to manage. For this Todo List project, I tried a **mobile-first approach** again — my second time after the [Odin Warrior Homepage](https://krig6.github.io/odin-warrior-homepage/) — and it really proved to be easier. I only needed a few media queries to support larger screens, which made styling feel much simpler and more manageable.
 
-Click the "**Use this template**" button on the repository page to create a new repository based on this template.
+Overall, this project was a practical attempt at applying the MVC pattern, building models, controllers, and views to organize the code. It helped me gradually build confidence in structuring a project and styling the UI. It’s far from perfect, but it’s a step forward in making a functional and maintainable Todo app.
 
-Alternatively, you can create a new repository and set this template as the upstream:
+## Future Enhancements
 
-```bash
-# HTTPS (recommended for beginners)
-git clone https://github.com/krig6/my-webpack-template.git
+- **Drag-and-Drop Todo Reordering** – Allow users to rearrange todos within a list using drag-and-drop for better task organization.
+- **Due Date Reminders** – Add notifications or visual cues for upcoming or overdue tasks.
+- **Search and Filter** – Implement searching and filtering todos by title, priority, or due date.
+- **Theme Support** – Light/dark mode toggle to improve usability and aesthetics.
+- **Export/Import Data** – Enable exporting projects and lists to JSON or CSV, and importing them back.
+- **User Authentication** – Allow multiple users with separate projects stored either locally or on a backend.
+- **Progress Tracking** – Visual indicators for list or project completion percentages.
 
-# SSH (if you have SSH keys configured)
-git clone git@github.com:krig6/my-webpack-template.git
+## Acknowledgments
 
-cd my-webpack-template
+### Resource and Tools
 
-git remote remove origin
-
-git remote add origin git@github.com:<github-username>/<new-repository-name>.git
-
-git push -u origin main
-```
-
-### 2. Install Dependencies
-
-```bash
-npm install
-```
-
-### 3. Start the Development Server
-
-Launch the development server with hot reloading enabled:
-
-```bash
-npm run dev
-```
-
-This will start the server at http://localhost:3000 by default.
-
-### 4. Build for Production
-
-Generate an optimized production build:
-
-```bash
-npm run build
-```
-
-This will generate the production-ready files in the dist directory.
-
-### 5. Deploy to GitHub Pages
-
-To deploy your project to GitHub Pages, use:
-
-```
-npm run deploy
-```
-
-This script will deploy the contents of the dist directory to the gh-pages branch of your repository, making it available at https://&lt;username&gt;.github.io/&lt;repository-name&gt;.
-
-Note: Replace &lt;username&gt; with your GitHub username and &lt;repository-name&gt; with the name of your repository.
-
-## Project Structure
-
-```
-.
-├── dist/             # Compiled output files
-├── src/              # Source files
-│   ├── assets/       # Images, fonts, and other assets
-│   ├── javascript/   # JavaScript modules and scripts
-│   ├── styles/       # CSS and styling files
-│   ├── index.js      # Main JavaScript entry point
-│   └── template.html # HTML template file
-├── eslint.config.js  # ESLint configuration for code linting
-├── .gitignore        # Specifies files to ignore in version control
-├── README.md         # Project documentation
-├── package.json      # Project metadata and dependencies
-├── webpack.common.js # Common Webpack configuration
-├── webpack.dev.js    # Webpack configuration for development
-└── webpack.prod.js   # Webpack configuration for production
-```
-
-## Customization
-
-Feel free to modify the configuration files and project structure to fit your specific needs. Whether you're adding new loaders, plugins, or custom scripts, this template is designed to be flexible and easy to extend.
-
-## Contributing
-
-Contributions, bug reports, and feature suggestions are welcome!
-
-To contribute:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-3. **Write tests for new functionality**
-4. **Ensure all tests pass**
-5. **Follow the existing code style**
-6. **Submit a pull request**
+- [The Odin Project](https://www.theodinproject.com/)<br>
+- [Neovim](https://neovim.io/)<br>
+- [Google Fonts](https://fonts.google.com/)<br>
+- [Boxicons](https://boxicons.com/)<br>
+- [Flaticon](https://www.flaticon.com/)<br>
