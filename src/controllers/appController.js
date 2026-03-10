@@ -107,6 +107,7 @@ export const appController = () => {
         renderProjectView(project);
         updateListViewHeader(project);
         renderProjects(projects, selectedProjectId);
+        storageCntrlr.saveSelectedProject(selectedProjectId)
       } else {
         selectedProjectId = null;
         renderLists([]);
