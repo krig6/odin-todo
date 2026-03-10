@@ -1,4 +1,4 @@
-import { addDays } from "date-fns"
+import { addDays } from 'date-fns';
 
 export const createTodo = (title = 'Untitled', description = '', dueDate, priority = 'high', status = 'inProgress') => {
   return {
@@ -8,5 +8,5 @@ export const createTodo = (title = 'Untitled', description = '', dueDate, priori
     dueDate: dueDate ?? addDays(new Date(), 1),
     priority,
     status
-  }
-}
+  };
+};

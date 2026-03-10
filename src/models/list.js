@@ -3,5 +3,5 @@ export const createList = (title = 'New List', todos = []) => {
     id: crypto.randomUUID(),
     title,
     todos
-  }
-}
+  };
+};

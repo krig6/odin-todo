@@ -1,4 +1,4 @@
-import { createTodo } from "../models/todo.js"
+import { createTodo } from '../models/todo.js';
 
 export const todoController = () => {
 
@@ -7,13 +7,13 @@ export const todoController = () => {
     description,
     dueDate,
     priority,
-    status }) => [...todos, createTodo(title, description, dueDate, priority, status)]
+    status }) => [...todos, createTodo(title, description, dueDate, priority, status)];
 
-  const removeTodo = (todos, todoId) => todos.filter(todo => todo.id !== todoId)
+  const removeTodo = (todos, todoId) => todos.filter(todo => todo.id !== todoId);
 
-  const updateTodo = (todos, todoId, updates) => todos.map(todo => todo.id === todoId ? { ...todo, ...updates } : todo)
+  const updateTodo = (todos, todoId, updates) => todos.map(todo => todo.id === todoId ? { ...todo, ...updates } : todo);
 
-  const toggleTodoStatus = (todos, todoId) => todos.map(todo => todo.id === todoId ? { ...todo, status: todo.status === 'inProgress' ? 'completed' : 'inProgress' } : todo)
+  const toggleTodoStatus = (todos, todoId) => todos.map(todo => todo.id === todoId ? { ...todo, status: todo.status === 'inProgress' ? 'completed' : 'inProgress' } : todo);
 
-  return { addTodo, removeTodo, updateTodo, toggleTodoStatus }
-}
+  return { addTodo, removeTodo, updateTodo, toggleTodoStatus };
+};

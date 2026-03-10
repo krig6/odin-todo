@@ -1,5 +1,10 @@
-import { appController } from "./controllers/appController.js";
+import '../style/global.css';
+import '../style/project.css';
+import '../style/list.css';
+import '../style/todo.css';
 
-const app = appController()
+import { appController } from './controllers/appController.js';
 
-app.init()
+const app = appController();
+
+app.init();

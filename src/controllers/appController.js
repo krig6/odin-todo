@@ -1,111 +1,111 @@
-import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectModalActions, bindProjectPanelToggle } from "../views/projectView.js";
+import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectModalActions, bindProjectPanelToggle } from '../views/projectView.js';
 
-import { projectController } from "./projectController.js";
+import { projectController } from './projectController.js';
 
-import { renderLists, bindOpenListModal, bindRemoveList, bindListFormSubmit } from "../views/listView.js";
-import { listController } from "./listController.js";
+import { renderLists, bindOpenListModal, bindRemoveList, bindListFormSubmit } from '../views/listView.js';
+import { listController } from './listController.js';
 
-import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from "../views/todoView.js";
-import { todoController } from "./todoController.js";
+import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from '../views/todoView.js';
+import { todoController } from './todoController.js';
 
-import { storageController } from "../storage/storageController.js"
+import { storageController } from '../storage/storageController.js';
 
 export const appController = () => {
-  const projCntrlr = projectController()
-  const listCntrlr = listController()
-  const todoCntrlr = todoController()
-  const storageCntrlr = storageController()
+  const projCntrlr = projectController();
+  const listCntrlr = listController();
+  const todoCntrlr = todoController();
+  const storageCntrlr = storageController();
 
-  let projects = storageCntrlr.loadProjects() || []
-  let selectedProjectId = null
+  let projects = storageCntrlr.loadProjects() || [];
+  let selectedProjectId = null;
 
-  const getProject = (projectId) => projects.find(project => project.id === projectId)
-  const getList = (project, listId) => project.lists.find(list => list.id === listId)
+  const getProject = (projectId) => projects.find(project => project.id === projectId);
+  const getList = (project, listId) => project.lists.find(list => list.id === listId);
 
   const getListContext = (listId) => {
-    if (!selectedProjectId) return null
-    const project = getProject(selectedProjectId)
-    if (!project) return null
-    const list = getList(project, listId)
-    if (!list) return null
-    return [project, list]
-  }
+    if (!selectedProjectId) return null;
+    const project = getProject(selectedProjectId);
+    if (!project) return null;
+    const list = getList(project, listId);
+    if (!list) return null;
+    return [project, list];
+  };
 
   const renderTodosForLists = (projectLists) => {
     projectLists.forEach(list => {
-      renderTodos(list.id, list.todos)
-    })
-  }
+      renderTodos(list.id, list.todos);
+    });
+  };
 
   const renderProjectView = (project) => {
-    renderLists(project.lists)
-    renderTodosForLists(project.lists)
-  }
+    renderLists(project.lists);
+    renderTodosForLists(project.lists);
+  };
 
   const persistState = () => {
-    storageCntrlr.saveProjects(projects)
-    storageCntrlr.saveSelectedProject(selectedProjectId)
-  }
+    storageCntrlr.saveProjects(projects);
+    storageCntrlr.saveSelectedProject(selectedProjectId);
+  };
 
   const hideProjectPanel = () => {
-    const projectPanel = document.getElementById('project-panel')
-    if (projectPanel) projectPanel.classList.remove('active')
-  }
+    const projectPanel = document.getElementById('project-panel');
+    if (projectPanel) projectPanel.classList.remove('active');
+  };
 
   const updateListViewHeader = (project) => {
     const titleEl = document.getElementById('project-title');
-    if (!titleEl) return
+    if (!titleEl) return;
 
-    titleEl.textContent = project ? project.title : "All slacking! Add a project first."
+    titleEl.textContent = project ? project.title : 'All slacking! Add a project first.';
   };
 
-  const getProjectCount = () => projects.length
+  const getProjectCount = () => projects.length;
 
   const init = () => {
-    selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId)
-    renderProjects(projects, selectedProjectId)
+    selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId);
+    renderProjects(projects, selectedProjectId);
 
-    const project = getProject(selectedProjectId)
+    const project = getProject(selectedProjectId);
     if (project) {
-      renderProjectView(project)
-      updateListViewHeader(project)
+      renderProjectView(project);
+      updateListViewHeader(project);
     }
 
-    bindProjectPanelToggle()
+    bindProjectPanelToggle();
 
     bindProjectModalActions(
       (projectTitle) => {
-        projects = projCntrlr.addProject(projects, { title: projectTitle })
-        selectedProjectId = projects[projects.length - 1].id
-        renderProjects(projects, selectedProjectId)
+        projects = projCntrlr.addProject(projects, { title: projectTitle });
+        selectedProjectId = projects[projects.length - 1].id;
+        renderProjects(projects, selectedProjectId);
 
-        hideProjectPanel()
+        hideProjectPanel();
 
-        const project = getProject(selectedProjectId)
-        renderLists(project.lists)
-        updateListViewHeader(project)
-        persistState()
+        const project = getProject(selectedProjectId);
+        renderLists(project.lists);
+        updateListViewHeader(project);
+        persistState();
       },
       (projectId, newTitle) => {
-        selectedProjectId = projectId
-        projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle)
-        renderProjects(projects, projectId)
-        const project = getProject(selectedProjectId)
-        updateListViewHeader(project)
-        persistState()
+        selectedProjectId = projectId;
+        projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle);
+        renderProjects(projects, projectId);
+        const project = getProject(selectedProjectId);
+        updateListViewHeader(project);
+        persistState();
       }
-    )
+    );
 
     bindRemoveProject((projectId) => {
-      projects = projCntrlr.removeProject(projects, projectId)
-      renderProjects(projects)
+      projects = projCntrlr.removeProject(projects, projectId);
+      renderProjects(projects);
 
       if (selectedProjectId === projectId && getProjectCount() !== 0) {
-        selectedProjectId = projects[0].id
-        const project = getProject(selectedProjectId)
-        renderProjectView(project)
-        updateListViewHeader(project)
-        renderProjects(projects, selectedProjectId)
+        selectedProjectId = projects[0].id;
+        const project = getProject(selectedProjectId);
+        renderProjectView(project);
+        updateListViewHeader(project);
+        renderProjects(projects, selectedProjectId);
       } else {
         selectedProjectId = null;
         renderLists([]);
@@ -113,103 +113,103 @@ export const appController = () => {
         renderProjects(projects);
       }
 
-      storageCntrlr.saveProjects(projects)
-    })
+      storageCntrlr.saveProjects(projects);
+    });
 
     bindSelectProject((projectId) => {
-      selectedProjectId = projectId
-      renderProjects(projects, projectId)
-      hideProjectPanel()
-      const project = getProject(selectedProjectId)
-      renderProjectView(project)
-      updateListViewHeader(project)
-      storageCntrlr.saveSelectedProject(selectedProjectId)
-    })
+      selectedProjectId = projectId;
+      renderProjects(projects, projectId);
+      hideProjectPanel();
+      const project = getProject(selectedProjectId);
+      renderProjectView(project);
+      updateListViewHeader(project);
+      storageCntrlr.saveSelectedProject(selectedProjectId);
+    });
 
     bindOpenListModal((listModal, listInput, listTitle) => {
       if (getProjectCount() === 0) {
-        alert('You must create a project before adding a list.')
-        return
+        alert('You must create a project before adding a list.');
+        return;
       }
-      listInput.value = listTitle || ''
-      listModal.showModal()
-      listInput.focus()
-    })
+      listInput.value = listTitle || '';
+      listModal.showModal();
+      listInput.focus();
+    });
 
     bindListFormSubmit(
       (listTitle) => {
-        if (!selectedProjectId) return
-        const project = getProject(selectedProjectId)
-        if (!project) return
+        if (!selectedProjectId) return;
+        const project = getProject(selectedProjectId);
+        if (!project) return;
 
-        project.lists = listCntrlr.addList(project.lists, { title: listTitle })
-        renderProjectView(project)
-        persistState()
+        project.lists = listCntrlr.addList(project.lists, { title: listTitle });
+        renderProjectView(project);
+        persistState();
       },
       (listId, newTitle) => {
-        const project = getProject(selectedProjectId)
-        if (!project) return
+        const project = getProject(selectedProjectId);
+        if (!project) return;
 
         project.lists = project.lists.map(list => {
           if (list.id === listId) {
-            return { ...list, title: newTitle }
+            return { ...list, title: newTitle };
           }
-          return list
-        })
-        renderProjectView(project)
-        persistState()
+          return list;
+        });
+        renderProjectView(project);
+        persistState();
       }
-    )
+    );
 
     bindRemoveList((listId) => {
-      if (!selectedProjectId) return
-      const project = getProject(selectedProjectId)
-      if (!project) return
+      if (!selectedProjectId) return;
+      const project = getProject(selectedProjectId);
+      if (!project) return;
 
-      project.lists = listCntrlr.removeList(project.lists, listId)
-      renderProjectView(project)
-      storageCntrlr.saveProjects(projects)
-    })
+      project.lists = listCntrlr.removeList(project.lists, listId);
+      renderProjectView(project);
+      storageCntrlr.saveProjects(projects);
+    });
 
     bindTodoModalActions(
       (listId, todoData) => {
-        const [project, list] = getListContext(listId)
-        if (!project || !list) return
+        const [project, list] = getListContext(listId);
+        if (!project || !list) return;
 
-        list.todos = todoCntrlr.addTodo(list.todos, todoData)
-        renderTodos(listId, list.todos)
-        storageCntrlr.saveProjects(projects)
-        storageCntrlr.saveSelectedProject(selectedProjectId)
+        list.todos = todoCntrlr.addTodo(list.todos, todoData);
+        renderTodos(listId, list.todos);
+        storageCntrlr.saveProjects(projects);
+        storageCntrlr.saveSelectedProject(selectedProjectId);
       },
 
       (listId, todoId, updates) => {
-        const [project, list] = getListContext(listId)
-        if (!project || !list) return
+        const [project, list] = getListContext(listId);
+        if (!project || !list) return;
 
-        list.todos = todoCntrlr.updateTodo(list.todos, todoId, updates)
-        renderTodos(listId, list.todos)
-        persistState()
+        list.todos = todoCntrlr.updateTodo(list.todos, todoId, updates);
+        renderTodos(listId, list.todos);
+        persistState();
       }
-    )
+    );
 
     bindRemoveTodo((listId, todoId) => {
-      const [project, list] = getListContext(listId)
-      if (!project || !list) return
+      const [project, list] = getListContext(listId);
+      if (!project || !list) return;
 
-      list.todos = todoCntrlr.removeTodo(list.todos, todoId)
-      renderTodos(listId, list.todos)
-      storageCntrlr.saveProjects(projects)
-    })
+      list.todos = todoCntrlr.removeTodo(list.todos, todoId);
+      renderTodos(listId, list.todos);
+      storageCntrlr.saveProjects(projects);
+    });
 
     bindToggleTodoStatus((listId, todoId) => {
-      const [project, list] = getListContext(listId)
-      if (!project || !list) return
+      const [project, list] = getListContext(listId);
+      if (!project || !list) return;
 
-      list.todos = todoCntrlr.toggleTodoStatus(list.todos, todoId)
-      renderTodos(listId, list.todos)
-      persistState()
-    })
-  }
+      list.todos = todoCntrlr.toggleTodoStatus(list.todos, todoId);
+      renderTodos(listId, list.todos);
+      persistState();
+    });
+  };
 
-  return { init }
-}
+  return { init };
+};

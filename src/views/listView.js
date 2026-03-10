@@ -1,62 +1,62 @@
-const listContainer = document.getElementById('list-container')
+const listContainer = document.getElementById('list-container');
 
 export const renderLists = (lists) => {
-  const fragment = document.createDocumentFragment()
+  const fragment = document.createDocumentFragment();
 
-  listContainer.innerHTML = ''
+  listContainer.innerHTML = '';
   lists.forEach(list => {
-    const li = document.createElement('li')
-    li.dataset.id = list.id
-    li.classList.add('list-item')
+    const li = document.createElement('li');
+    li.dataset.id = list.id;
+    li.classList.add('list-item');
 
-    const listHeader = document.createElement('div')
-    listHeader.classList.add('list-header')
+    const listHeader = document.createElement('div');
+    listHeader.classList.add('list-header');
 
-    const titleSpan = document.createElement('span')
-    titleSpan.textContent = list.title
-    titleSpan.classList.add('list-item__title')
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = list.title;
+    titleSpan.classList.add('list-item__title');
 
-    const editTitleBtn = document.createElement('button')
-    editTitleBtn.classList.add('list-item__edit')
-    editTitleBtn.type = 'button'
+    const editTitleBtn = document.createElement('button');
+    editTitleBtn.classList.add('list-item__edit');
+    editTitleBtn.type = 'button';
 
-    const editIcon = document.createElement('i')
-    editIcon.classList.add('bx', 'bx-edit')
-    editTitleBtn.appendChild(editIcon)
+    const editIcon = document.createElement('i');
+    editIcon.classList.add('bx', 'bx-edit');
+    editTitleBtn.appendChild(editIcon);
 
-    const deleteBtn = document.createElement('button')
-    deleteBtn.classList.add('list-item__delete')
-    deleteBtn.type = 'button'
+    const deleteBtn = document.createElement('button');
+    deleteBtn.classList.add('list-item__delete');
+    deleteBtn.type = 'button';
 
-    const deleteIcon = document.createElement('i')
-    deleteIcon.classList.add('bx', 'bx-x')
-    deleteBtn.appendChild(deleteIcon)
+    const deleteIcon = document.createElement('i');
+    deleteIcon.classList.add('bx', 'bx-x');
+    deleteBtn.appendChild(deleteIcon);
 
-    const controlsContainer = document.createElement('div')
-    controlsContainer.classList.add('list-item__controls')
-    controlsContainer.append(editTitleBtn, deleteBtn)
+    const controlsContainer = document.createElement('div');
+    controlsContainer.classList.add('list-item__controls');
+    controlsContainer.append(editTitleBtn, deleteBtn);
 
-    const todoContainer = document.createElement('ul')
-    todoContainer.classList.add('todo-container')
-    todoContainer.dataset.listId = list.id
+    const todoContainer = document.createElement('ul');
+    todoContainer.classList.add('todo-container');
+    todoContainer.dataset.listId = list.id;
 
-    const addTodoBtn = document.createElement('button')
-    addTodoBtn.classList.add('list-item__add-todo')
+    const addTodoBtn = document.createElement('button');
+    addTodoBtn.classList.add('list-item__add-todo');
 
-    const addTodoIcon = document.createElement('i')
-    addTodoIcon.classList.add('bx', 'bx-plus')
+    const addTodoIcon = document.createElement('i');
+    addTodoIcon.classList.add('bx', 'bx-plus');
 
-    const addTodoBtnTextNode = document.createTextNode("Add Todo")
+    const addTodoBtnTextNode = document.createTextNode('Add Todo');
 
-    addTodoBtn.append(addTodoIcon, addTodoBtnTextNode)
+    addTodoBtn.append(addTodoIcon, addTodoBtnTextNode);
 
-    listHeader.append(titleSpan, controlsContainer)
+    listHeader.append(titleSpan, controlsContainer);
 
-    li.append(listHeader, addTodoBtn, todoContainer)
-    fragment.appendChild(li)
-  })
-  listContainer.appendChild(fragment)
-}
+    li.append(listHeader, addTodoBtn, todoContainer);
+    fragment.appendChild(li);
+  });
+  listContainer.appendChild(fragment);
+};
 
 export const bindOpenListModal = (callbackFunction) => {
   const listModal = document.getElementById('list-modal');
@@ -65,18 +65,18 @@ export const bindOpenListModal = (callbackFunction) => {
 
   if (!listModal || !listInput || !addListBtn) return;
 
-  addListBtn.onclick = () => callbackFunction(listModal, listInput)
+  addListBtn.onclick = () => callbackFunction(listModal, listInput);
 
   listContainer.addEventListener('click', (e) => {
     if (e.target.closest('.list-item__edit')) {
-      const editTitleBtn = e.target.closest('.list-item__edit')
-      const listItem = editTitleBtn.closest('.list-item')
-      const title = listItem.querySelector('.list-item__title').textContent
-      listModal.dataset.id = listItem.dataset.id
-      listModal.dataset.mode = 'edit'
-      callbackFunction(listModal, listInput, title)
+      const editTitleBtn = e.target.closest('.list-item__edit');
+      const listItem = editTitleBtn.closest('.list-item');
+      const title = listItem.querySelector('.list-item__title').textContent;
+      listModal.dataset.id = listItem.dataset.id;
+      listModal.dataset.mode = 'edit';
+      callbackFunction(listModal, listInput, title);
     }
-  })
+  });
 };
 
 export const bindListFormSubmit = (addCallback, updateCallback) => {
@@ -86,22 +86,22 @@ export const bindListFormSubmit = (addCallback, updateCallback) => {
   const listInput = document.getElementById('list-title-input');
 
   cancelBtn.onclick = () => {
-    listInput.value = ''
+    listInput.value = '';
     listModal.close();
-    listModal.dataset.id = ''
-    listModal.dataset.mode = 'add'
-  }
+    listModal.dataset.id = '';
+    listModal.dataset.mode = 'add';
+  };
 
-  if (!listModal || !listForm || !listInput) return
+  if (!listModal || !listForm || !listInput) return;
 
   listForm.onsubmit = (e) => {
     e.preventDefault();
 
     const value = listInput.value.trim();
-    if (!value) return
+    if (!value) return;
 
-    const mode = listModal.dataset.mode
-    const listId = listModal.dataset.id
+    const mode = listModal.dataset.mode;
+    const listId = listModal.dataset.id;
 
     if (mode === 'edit') {
       if (isListTitleTaken(value)) {
@@ -118,28 +118,28 @@ export const bindListFormSubmit = (addCallback, updateCallback) => {
       }
       addCallback(value);
     }
-    listModal.close()
-    listModal.value = ''
-    listModal.dataset.mode = 'add'
-    listModal.dataset.id = ''
+    listModal.close();
+    listModal.value = '';
+    listModal.dataset.mode = 'add';
+    listModal.dataset.id = '';
   };
-}
+};
 
 export const bindRemoveList = (callbackFunction) => {
   listContainer.addEventListener('click', (e) => {
     if (e.target.closest('.list-item__delete')) {
-      e.stopPropagation()
-      const li = e.target.closest('.list-item')
-      const listId = li.dataset.id
-      callbackFunction(listId)
+      e.stopPropagation();
+      const li = e.target.closest('.list-item');
+      const listId = li.dataset.id;
+      callbackFunction(listId);
     }
-  })
-}
+  });
+};
 
 const isListTitleTaken = (title, currentSpan = null) => {
   const existingTitle = Array.from(document.querySelectorAll('.list-item__title'))
     .filter(span => span !== currentSpan)
-    .map(span => span.textContent.trim().toLowerCase())
+    .map(span => span.textContent.trim().toLowerCase());
 
-  return existingTitle.includes(title.trim().toLowerCase())
-}
+  return existingTitle.includes(title.trim().toLowerCase());
+};
