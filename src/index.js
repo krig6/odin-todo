@@ -1,7 +1,7 @@
-import '../style/global.css';
-import '../style/project.css';
-import '../style/list.css';
-import '../style/todo.css';
+import './styles/global.css'
+import './styles/project.css'
+import './styles/list.css'
+import './styles/todo.css'
 
 import { appController } from './controllers/appController.js';
 
