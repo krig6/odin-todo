@@ -9,6 +9,7 @@ import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus
 import { todoController } from './todoController.js';
 
 import { storageController } from '../storage/storageController.js';
+import { sampleProjects } from '../sampleData.js';
 
 export const appController = () => {
   const projCntrlr = projectController();
@@ -16,7 +17,7 @@ export const appController = () => {
   const todoCntrlr = todoController();
   const storageCntrlr = storageController();
 
-  let projects = storageCntrlr.loadProjects() || [];
+  let projects = storageCntrlr.loadProjects() || sampleProjects();
   let selectedProjectId = null;
 
   const getProject = (projectId) => projects.find(project => project.id === projectId);
@@ -62,7 +63,7 @@ export const appController = () => {
   const getProjectCount = () => projects.length;
 
   const init = () => {
-    selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId);
+    selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId) || projects[0]?.id || null;
     renderProjects(projects, selectedProjectId);
 
     const project = getProject(selectedProjectId);
