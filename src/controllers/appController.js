@@ -10,6 +10,7 @@ import { todoController } from './todoController.js';
 
 import { storageController } from '../storage/storageController.js';
 import { sampleProjects } from '../sampleData.js';
+import { showToast } from "../utils/toast.js";
 
 export const appController = () => {
   const projCntrlr = projectController();
@@ -130,7 +131,7 @@ export const appController = () => {
 
     bindOpenListModal((listModal, listInput, listTitle) => {
       if (getProjectCount() === 0) {
-        alert('You must create a project before adding a list.');
+        showToast('You must create a project before adding a list.', 'info');
         return;
       }
       listInput.value = listTitle || '';

@@ -1,3 +1,5 @@
+import { showToast } from "../utils/toast.js";
+
 export const renderTodos = (listId, todos) => {
   const todoContainer = document.querySelector(`.todo-container[data-list-id="${listId}"]`);
   if (!todoContainer) return;
@@ -68,12 +70,14 @@ export const bindRemoveTodo = (callbackFunction) => {
 
     const todoContainer = deleteBtn.closest('.todo-container');
     const todo = deleteBtn.closest('.todo-item');
+    const title = todo.querySelector('.todo-item__title').textContent
 
     if (!todo || !todoContainer) return;
 
     const listId = todoContainer.dataset.listId;
     const todoId = todo.dataset.id;
 
+    showToast(`Todo "${title}" was deleted.`, 'warning');
     callbackFunction(listId, todoId);
   });
 };
@@ -151,8 +155,10 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
     if (!title) return;
 
     if (currentMode === 'add') {
+      showToast(`Todo "${title}" added successfully.`, 'success');
       addCallback(listId, { title, description, dueDate, priority });
     } else if (currentMode === 'edit') {
+      showToast(`Todo renamed to "${title}".`, 'info');
       updateCallback(listId, todoId, { title, description, dueDate, priority });
     }
 

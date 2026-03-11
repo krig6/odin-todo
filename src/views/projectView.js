@@ -1,3 +1,5 @@
+import { showToast } from "../utils/toast.js";
+
 const projectList = document.getElementById('project-list');
 
 export const renderProjects = (projects, selectedId) => {
@@ -93,17 +95,19 @@ export const bindProjectModalActions = (addCallback, updateCallback) => {
     const value = title.value.trim();
 
     if (isProjectTitleTaken(value)) {
-      alert('This project title already exists.');
+      showToast('This project title already exists.', 'warning');
       title.select();
       return;
     }
 
     if (currentMode === 'add') {
+      showToast(`Project "${value}" added successfully.`, 'success');
       addCallback(value);
       title.value = '';
       projectModal.close();
     } else if (currentMode === 'edit') {
       const projectId = form.dataset.id;
+      showToast(`Project renamed to "${value}".`, 'info');
       updateCallback(projectId, value);
       projectModal.close();
     }
@@ -115,6 +119,8 @@ export const bindRemoveProject = (callbackFunction) => {
     if (e.target.closest('.project-item__delete')) {
       e.stopPropagation();
       const li = e.target.closest('.project-item');
+      const title = li.querySelector('.project-item__title').textContent
+      showToast(`Project "${title}" was deleted.`, 'warning');
       const projectId = li.dataset.id;
       callbackFunction(projectId);
     }
@@ -125,7 +131,6 @@ export const bindSelectProject = (callbackFunction) => {
   projectList.addEventListener('click', (e) => {
     const li = e.target.closest('.project-item');
     if (!li) return;
-    if (e.target.closest('.project-item__delete')) return;
 
     if (e.target.closest('.project-item__edit')) return;
     if (e.target.closest('.project-item__delete')) return;

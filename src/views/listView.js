@@ -1,3 +1,5 @@
+import { showToast } from "../utils/toast.js";
+
 const listContainer = document.getElementById('list-container');
 
 export const renderLists = (lists) => {
@@ -111,6 +113,7 @@ export const bindListFormSubmit = (addCallback, updateCallback) => {
         listInput.select();
         return;
       }
+      showToast(`List renamed to "${value}".`, 'info');
       updateCallback(listId, value);
     } else {
       if (isListTitleTaken(value)) {
@@ -118,6 +121,7 @@ export const bindListFormSubmit = (addCallback, updateCallback) => {
         listInput.select();
         return;
       }
+      showToast(`List "${value}" added successfully.`, 'success');
       addCallback(value);
     }
     listModal.close();
@@ -132,6 +136,8 @@ export const bindRemoveList = (callbackFunction) => {
     if (e.target.closest('.list-item__delete')) {
       e.stopPropagation();
       const li = e.target.closest('.list-item');
+      const title = li.querySelector('.list-item__title').textContent
+      showToast(`List "${title}" was deleted.`, 'warning');
       const listId = li.dataset.id;
       callbackFunction(listId);
     }

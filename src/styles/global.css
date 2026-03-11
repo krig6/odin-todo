@@ -160,7 +160,6 @@ h3 {
   font-family: "Inter", sans-serif;
   opacity: 0;
   transition: transform 0.2s ease, opacity 0.2s ease;
-  z-index: 200;
 }
 
 .project-modal[open],
@@ -173,8 +172,8 @@ h3 {
 .project-modal::backdrop,
 .list-modal::backdrop,
 .modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(1px);
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(0.1px);
 }
 
 /* ============================================================ */
@@ -200,7 +199,7 @@ h3 {
   padding: 0.5rem;
   letter-spacing: 0.18em;
   pointer-events: none;
-  z-index: 1;
+  z-index: 100;
 }
 
 .project-modal__input,
