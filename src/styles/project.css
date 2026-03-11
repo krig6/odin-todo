@@ -29,10 +29,15 @@
 .project-panel__header {
   border-bottom: 1px solid #b0bec5;
   padding: 1rem;
+  margin-bottom: 1rem;
 }
 
 .project-panel__toggle-btn {
   font-size: 1.5rem;
+}
+
+.project-panel__add-btn {
+  margin-bottom: 0.5rem;
 }
 
 /* ============================================================ */
@@ -40,6 +45,11 @@
 /* ============================================================ */
 .project-panel__body {
   padding: 0.5rem 1rem;
+}
+
+.project-panel__title {
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 /* ============================================================ */
@@ -52,8 +62,12 @@
 }
 
 .project-item--selected {
-  background-color: #90a4ae;
+  background-color: #b0bec5;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.project-item--selected .project-item__title {
+  color: #fff;
 }
 
 @media (min-width: 1024px) {

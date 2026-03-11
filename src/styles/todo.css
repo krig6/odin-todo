@@ -21,6 +21,11 @@
   background-color: #dce4e8;
 }
 
+.todo-item__title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 .todo-item__description {
   font-size: 0.875rem;
   color: #37474f;

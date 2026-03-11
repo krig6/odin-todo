@@ -5,7 +5,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 1rem;
 }
 
@@ -28,6 +28,10 @@
 
 .list-item__title {
   flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #37474f;
+  opacity: 0.8;
 }
 
 @media (min-width: 768px) {
@@ -49,7 +53,7 @@
 
   .list-view__header {
     border-bottom: 1px solid #d0d7de;
-    padding-bottom: 0.5rem;
+    padding-bottom: 1rem;
     margin-bottom: 1rem;
   }
 }
