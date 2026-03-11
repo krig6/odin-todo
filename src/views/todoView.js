@@ -10,6 +10,7 @@ export const renderTodos = (listId, todos) => {
     const li = document.createElement('li');
     li.dataset.id = todo.id;
     li.classList.add('todo-item', `todo-item--${todo.priority}`);
+    li.dataset.status = todo.status === 'completed' ? 'completed' : 'inprogress'
 
     const title = document.createElement('span');
     title.textContent = todo.title;
@@ -177,17 +178,12 @@ export const bindToggleTodoStatus = (callbackFunction) => {
 
     e.stopPropagation();
 
-    const statusIcon = statusBtn.querySelector('i');
-    const isCompleted = statusIcon.classList.contains('bx-check-circle');
-
-    statusIcon.classList.remove(isCompleted ? 'bx-check-circle' : 'bx-clock-dashed-half');
-    statusIcon.classList.add(isCompleted ? 'bx-clock-dashed-half' : 'bx-check-circle');
-
-    const todoContainer = statusIcon.closest('.todo-container');
-    const todo = statusIcon.closest('.todo-item');
+    const todoContainer = statusBtn.closest('.todo-container');
+    const todo = statusBtn.closest('.todo-item');
 
     const listId = todoContainer.dataset.listId;
     const todoId = todo.dataset.id;
+
     callbackFunction(listId, todoId);
   });
 };
