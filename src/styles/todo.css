@@ -4,6 +4,10 @@
 .todo-container {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #78909c #eaeaea;
+  padding: 0.5rem;
 }
 
 .todo-item {
@@ -11,6 +15,10 @@
   gap: 0.5rem;
   position: relative;
   cursor: pointer;
+}
+
+.todo-item:hover {
+  background-color: #dce4e8;
 }
 
 .todo-item__description {
