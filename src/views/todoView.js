@@ -8,7 +8,6 @@ export const renderTodos = (listId, todos) => {
     const li = document.createElement('li');
     li.dataset.id = todo.id;
     li.classList.add('todo-item', `todo-item--${todo.priority}`);
-    li.dataset.status = todo.status === 'completed' ? 'Completed' : 'In Progress';
 
     const title = document.createElement('span');
     title.textContent = todo.title;
@@ -32,7 +31,8 @@ export const renderTodos = (listId, todos) => {
     todoHeader.classList.add('todo-header');
 
     const statusBtn = document.createElement('button');
-    statusBtn.classList.add('todo-item__status');
+    statusBtn.classList.add('todo-item__status', 'has-tooltip');
+    statusBtn.dataset.tooltip = todo.status === 'completed' ? 'Completed' : 'In Progress';
 
     const statusIcon = document.createElement('i');
     const isCompleted = todo.status === 'inProgress' ? false : true;
@@ -40,7 +40,8 @@ export const renderTodos = (listId, todos) => {
     statusBtn.appendChild(statusIcon);
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('todo-item__delete');
+    deleteBtn.classList.add('todo-item__delete', 'has-tooltip');
+    deleteBtn.dataset.tooltip = 'Delete'
 
     const deleteIcon = document.createElement('i');
     deleteIcon.classList.add('bx', 'bx-x');

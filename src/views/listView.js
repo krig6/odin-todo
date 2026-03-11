@@ -17,7 +17,8 @@ export const renderLists = (lists) => {
     titleSpan.classList.add('list-item__title');
 
     const editTitleBtn = document.createElement('button');
-    editTitleBtn.classList.add('list-item__edit');
+    editTitleBtn.classList.add('list-item__edit', 'has-tooltip');
+    editTitleBtn.dataset.tooltip = 'Edit Title'
     editTitleBtn.type = 'button';
 
     const editIcon = document.createElement('i');
@@ -25,7 +26,8 @@ export const renderLists = (lists) => {
     editTitleBtn.appendChild(editIcon);
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.classList.add('list-item__delete');
+    deleteBtn.classList.add('list-item__delete', 'has-tooltip');
+    deleteBtn.dataset.tooltip = 'Delete'
     deleteBtn.type = 'button';
 
     const deleteIcon = document.createElement('i');

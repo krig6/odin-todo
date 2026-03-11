@@ -52,6 +52,11 @@
   font-weight: 600;
 }
 
+.project-item__edit.has-tooltip::after,
+.project-item__delete.has-tooltip::after {
+  top: -15%;
+}
+
 /* ============================================================ */
 /*  PROJECT ITEMS                                              */
 /* ============================================================ */

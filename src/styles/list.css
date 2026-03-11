@@ -26,6 +26,11 @@
   max-height: 65vh;
 }
 
+.list-item__edit.has-tooltip::after,
+.list-item__delete.has-tooltip::after {
+  top: -1.5%;
+}
+
 .list-item__title {
   flex: 1;
   font-size: 0.875rem;
