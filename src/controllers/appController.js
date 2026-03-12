@@ -3,7 +3,7 @@ import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectPanelT
 import { projectController } from './projectController.js';
 
 import { renderLists, bindRemoveList } from '../views/listView.js';
-import { bindUnifiedModalSubmit, bindOpenModal } from './modalController.js';
+import { bindUnifiedModalSubmit, bindOpenModal } from '../views/modalView.js';
 import { listController } from './listController.js';
 
 import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from '../views/todoView.js';
