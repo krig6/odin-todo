@@ -86,20 +86,20 @@ export const appController = () => {
           renderProjectView(project);
           storageCntrlr.saveProjects(projects);
         } else if (type === 'project') {
+          const wasSelected = selectedProjectId === id
           projects = projCntrlr.removeProject(projects, id);
-          renderProjects(projects);
-          if (selectedProjectId === id && getProjectCount(projects) !== 0) {
-            selectedProjectId = projects[0].id;
+          if (getProjectCount(projects) > 0) {
+            if (wasSelected) selectedProjectId = projects[0].id
             const project = getProject(selectedProjectId);
+            renderProjects(projects, selectedProjectId);
             renderProjectView(project);
             updateListViewHeader(project);
-            renderProjects(projects, selectedProjectId);
             storageCntrlr.saveSelectedProject(selectedProjectId)
           } else {
-            selectedProjectId = null;
+            selectedProjectId = null
+            renderProjects(projects);
             renderLists([]);
             updateListViewHeader(null);
-            renderProjects(projects);
           }
           storageCntrlr.saveProjects(projects);
         } else {
@@ -124,7 +124,7 @@ export const appController = () => {
           persistState();
         } else {
           projects = projCntrlr.addProject(projects, { title: title });
-          selectedProjectId = projects[projects.length - 1].id;
+          selectedProjectId = projects[0].id;
           renderProjects(projects, selectedProjectId);
           hideProjectPanel();
           const project = getProject(selectedProjectId);

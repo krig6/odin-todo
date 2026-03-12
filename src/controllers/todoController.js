@@ -7,7 +7,7 @@ export const todoController = () => {
     description,
     dueDate,
     priority,
-    status }) => [...todos, createTodo(title, description, dueDate, priority, status)];
+    status }) => [createTodo(title, description, dueDate, priority, status), ...todos];
 
   const removeTodo = (todos, todoId) => todos.filter(todo => todo.id !== todoId);
 

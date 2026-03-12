@@ -2,7 +2,7 @@ import { createList } from '../models/list.js';
 
 export const listController = () => {
 
-  const addList = (lists, { title }) => [...lists, createList(title)];
+  const addList = (lists, { title }) => [createList(title), ...lists];
 
   const removeList = (lists, listId) => lists.filter(list => list.id !== listId);
 
