@@ -61,28 +61,6 @@ export const renderTodos = (listId, todos) => {
   });
 };
 
-export const bindRemoveTodo = (callbackFunction) => {
-  const listContainer = document.querySelector('.list-container');
-  if (!listContainer) return;
-  listContainer.addEventListener('click', (e) => {
-    const deleteBtn = e.target.closest('.todo-item__delete');
-    if (!deleteBtn) return;
-    e.stopPropagation();
-
-    const todoContainer = deleteBtn.closest('.todo-container');
-    const todo = deleteBtn.closest('.todo-item');
-    const title = todo.querySelector('.todo-item__title').textContent
-
-    if (!todo || !todoContainer) return;
-
-    const listId = todoContainer.dataset.listId;
-    const todoId = todo.dataset.id;
-
-    showToast(`Todo "${title}" was deleted.`, 'warning');
-    callbackFunction(listId, todoId);
-  });
-};
-
 export const bindTodoModalActions = (addCallback, updateCallback) => {
   const listContainer = document.getElementById('list-container');
   const form = document.getElementById('todo-form');

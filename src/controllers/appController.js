@@ -1,17 +1,18 @@
-import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectPanelToggle } from '../views/projectView.js';
+import { renderProjects, bindSelectProject, bindProjectPanelToggle } from '../views/projectView.js';
 
 import { projectController } from './projectController.js';
 
-import { renderLists, bindRemoveList } from '../views/listView.js';
+import { renderLists } from '../views/listView.js';
 import { bindUnifiedModalSubmit, bindOpenModal } from '../views/modalView.js';
 import { listController } from './listController.js';
 
-import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from '../views/todoView.js';
+import { renderTodos, bindTodoModalActions, bindToggleTodoStatus } from '../views/todoView.js';
 import { todoController } from './todoController.js';
 
 import { storageController } from '../storage/storageController.js';
 import { sampleProjects } from '../sampleData.js';
 import { getProjectCount } from '../utils/helpers.js'
+import { bindRemoveItem } from '../views/removeBindings.js';
 
 export const appController = () => {
   const projCntrlr = projectController();
@@ -74,6 +75,43 @@ export const appController = () => {
 
     bindProjectPanelToggle();
     bindOpenModal(() => getProjectCount(projects))
+    bindRemoveItem(
+      (id, type, todoId) => {
+        if (type === 'list') {
+          if (!selectedProjectId) return;
+          const project = getProject(selectedProjectId);
+          if (!project) return;
+
+          project.lists = listCntrlr.removeList(project.lists, id);
+          renderProjectView(project);
+          storageCntrlr.saveProjects(projects);
+        } else if (type === 'project') {
+          projects = projCntrlr.removeProject(projects, id);
+          renderProjects(projects);
+          if (selectedProjectId === id && getProjectCount(projects) !== 0) {
+            selectedProjectId = projects[0].id;
+            const project = getProject(selectedProjectId);
+            renderProjectView(project);
+            updateListViewHeader(project);
+            renderProjects(projects, selectedProjectId);
+            storageCntrlr.saveSelectedProject(selectedProjectId)
+          } else {
+            selectedProjectId = null;
+            renderLists([]);
+            updateListViewHeader(null);
+            renderProjects(projects);
+          }
+          storageCntrlr.saveProjects(projects);
+        } else {
+          const [project, list] = getListContext(id);
+          if (!project || !list) return;
+
+          list.todos = todoCntrlr.removeTodo(list.todos, todoId);
+          renderTodos(id, list.todos);
+          storageCntrlr.saveProjects(projects);
+        }
+      }
+    )
 
     bindUnifiedModalSubmit(
       (type, title) => {
@@ -118,26 +156,6 @@ export const appController = () => {
       }
     );
 
-    bindRemoveProject((projectId) => {
-      projects = projCntrlr.removeProject(projects, projectId);
-      renderProjects(projects);
-      if (selectedProjectId === projectId && getProjectCount(projects) !== 0) {
-        selectedProjectId = projects[0].id;
-        const project = getProject(selectedProjectId);
-        renderProjectView(project);
-        updateListViewHeader(project);
-        renderProjects(projects, selectedProjectId);
-        storageCntrlr.saveSelectedProject(selectedProjectId)
-      } else {
-        selectedProjectId = null;
-        renderLists([]);
-        updateListViewHeader(null);
-        renderProjects(projects);
-      }
-
-      storageCntrlr.saveProjects(projects);
-    });
-
     bindSelectProject((projectId) => {
       selectedProjectId = projectId;
       renderProjects(projects, projectId);
@@ -146,17 +164,6 @@ export const appController = () => {
       renderProjectView(project);
       updateListViewHeader(project);
       storageCntrlr.saveSelectedProject(selectedProjectId);
-    });
-
-
-    bindRemoveList((listId) => {
-      if (!selectedProjectId) return;
-      const project = getProject(selectedProjectId);
-      if (!project) return;
-
-      project.lists = listCntrlr.removeList(project.lists, listId);
-      renderProjectView(project);
-      storageCntrlr.saveProjects(projects);
     });
 
     bindTodoModalActions(
@@ -179,15 +186,6 @@ export const appController = () => {
         persistState();
       }
     );
-
-    bindRemoveTodo((listId, todoId) => {
-      const [project, list] = getListContext(listId);
-      if (!project || !list) return;
-
-      list.todos = todoCntrlr.removeTodo(list.todos, todoId);
-      renderTodos(listId, list.todos);
-      storageCntrlr.saveProjects(projects);
-    });
 
     bindToggleTodoStatus((listId, todoId) => {
       const [project, list] = getListContext(listId);

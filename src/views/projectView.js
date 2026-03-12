@@ -1,5 +1,3 @@
-import { showToast } from "../utils/toast.js";
-
 const projectList = document.getElementById('project-container');
 
 export const renderProjects = (projects, selectedId) => {
@@ -45,19 +43,6 @@ export const renderProjects = (projects, selectedId) => {
     fragment.appendChild(li);
   });
   projectList.appendChild(fragment);
-};
-
-export const bindRemoveProject = (callbackFunction) => {
-  projectList.addEventListener('click', (e) => {
-    if (e.target.closest('.project-item__delete')) {
-      e.stopPropagation();
-      const li = e.target.closest('.project-item');
-      const title = li.querySelector('.project-item__title').textContent
-      showToast(`Project "${title}" was deleted.`, 'warning');
-      const projectId = li.dataset.id;
-      callbackFunction(projectId);
-    }
-  });
 };
 
 export const bindSelectProject = (callbackFunction) => {

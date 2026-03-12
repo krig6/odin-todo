@@ -1,5 +1,3 @@
-import { showToast } from "../utils/toast.js";
-
 const listContainer = document.getElementById('list-container');
 
 export const renderLists = (lists) => {
@@ -60,18 +58,5 @@ export const renderLists = (lists) => {
     fragment.appendChild(li);
   });
   listContainer.appendChild(fragment);
-};
-
-export const bindRemoveList = (callbackFunction) => {
-  listContainer.addEventListener('click', (e) => {
-    if (e.target.closest('.list-item__delete')) {
-      e.stopPropagation();
-      const li = e.target.closest('.list-item');
-      const title = li.querySelector('.list-item__title').textContent
-      showToast(`List "${title}" was deleted.`, 'warning');
-      const listId = li.dataset.id;
-      callbackFunction(listId);
-    }
-  });
 };
 
