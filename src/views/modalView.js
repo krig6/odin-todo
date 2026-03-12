@@ -1,5 +1,5 @@
 import { showToast } from "../utils/toast.js";
-import { openModal, isTitleTaken } from "../utils/helpers.js";
+import { isTitleTaken } from "../utils/helpers.js";
 
 const listContainer = document.getElementById('list-container');
 const projectContainer = document.getElementById('project-container')
@@ -10,6 +10,16 @@ const modalCancelBtn = document.getElementById('unified-modal-cancel-btn');
 const titleInput = document.getElementById('unified-modal-title-input');
 const addListBtn = document.getElementById('list-add-btn');
 const addProjectButton = document.getElementById('project-add-btn');
+
+const openModal = (type, mode, modal, titleInput, newTitle) => {
+  modal.dataset.type = type
+  modal.dataset.mode = mode
+  titleInput.placeholder = type === 'list' ? 'New List...' : 'New Project...'
+  document.getElementById('unified-modal-title').textContent = type === 'list' ? 'Add List' : 'Add Project'
+  titleInput.value = newTitle || '';
+  titleInput.focus();
+  modal.showModal();
+}
 
 export const bindOpenModal = (getProjectCount) => {
   if (!modal || !titleInput) return;
@@ -63,20 +73,38 @@ export const bindUnifiedModalSubmit = (addCallback, updateCallback) => {
     const type = modal.dataset.type;
     const id = modal.dataset.id;
 
+    const existingTitles = Array.from(
+      document.querySelectorAll(
+        type === 'list'
+          ? '.list-item__title'
+          : '.project-item__title'
+      )
+    ).map(span => span.textContent.trim().toLowerCase())
+
+    let titlesToCheck = existingTitles
+
     if (mode === 'edit') {
-      if (isTitleTaken(type, value)) {
-        showToast(`This title already exists.`, 'info');
-        titleInput.select();
-        return;
+      const currentTitle = document.querySelector(
+        type === 'list'
+          ? `.list-item[data-id="${id}"] .list-item__title`
+          : `.project-item[data-id="${id}"] .project-item__title`
+      )?.textContent.trim().toLowerCase();
+
+      if (currentTitle) {
+        titlesToCheck = existingTitles.filter(title => title !== currentTitle);
       }
+    }
+
+    if (isTitleTaken(titlesToCheck, value)) {
+      showToast(`This title already exists.`, 'info');
+      titleInput.select();
+      return;
+    }
+
+    if (mode === 'edit') {
       showToast(`Title renamed to "${value}".`, 'info');
       updateCallback(type, id, value);
     } else {
-      if (isTitleTaken(type, value)) {
-        showToast(`This title already exists.`, 'info');
-        titleInput.select();
-        return;
-      }
       showToast(`"${value}" added successfully.`, 'success');
       addCallback(type, value);
     }
