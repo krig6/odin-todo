@@ -34,9 +34,8 @@
             <i class="bx bx-plus"></i>
             Add Project
           </button>
-          <ul id="project-list" class="project-panel__list"></ul>
+          <ul id="project-container" class="project-panel__list"></ul>
         </div>
-
       </aside>
 
       <main id="content" class="app__main">
@@ -54,36 +53,20 @@
 
     </div>
 
-    <dialog id="project-modal" class="project-modal">
+    <dialog id="unified-modal" class="modal">
+      <form id="unified-modal-form" class="modal__form">
+        <h3 id="unified-modal-title" class="modal__title"></h3>
 
-      <form id="project-form" class="project-modal__form">
-        <h3 id="project-modal-title" class="project-modal__title">Add Project</h3>
-
-        <div class="project-modal__field">
-          <label for="project-title-input" class="project-modal__label">TITLE</label>
-          <input type="text" id="project-title-input" class="project-modal__input" placeholder="New project..."
-            required />
+        <div class="modal__field">
+          <label for="unified-modal-title-input" class="modal__label">TITLE</label>
+          <input type="text" id="unified-modal-title-input" class="modal__title-input" placeholder required />
         </div>
 
-        <div class="project-modal__action-buttons">
-          <button type="button" id="project-cancel-btn" class="project-modal__cancel-btn">Cancel</button>
-          <button type="submit" id="project-confirm-btn" class="project-modal__confirm-btn">Confirm</button>
-        </div>
-      </form>
-    </dialog>
-
-    <dialog id="list-modal" class="list-modal">
-      <form id="list-form" class="list-modal__form">
-        <h3 id="list-modal-title" class="list-modal__title">Add List</h3>
-
-        <div class="list-modal__field">
-          <label for="list-title-input" class="list-modal__label">TITLE</label>
-          <input type="text" id="list-title-input" class="list-modal__input" placeholder="New list..." required />
-        </div>
-
-        <div class="list-modal__action-buttons">
-          <button type="button" id="list-cancel-btn" class="list-modal__cancel-btn">Cancel</button>
-          <button type="submit" id="list-confirm-btn" class="list-modal__confirm-btn">Confirm</button>
+        <div class="modal__actions">
+          <button type="button" id="unified-modal-cancel-btn"
+            class="modal__button modal__button--cancel">Cancel</button>
+          <button type="submit" id="unified-modal-confirm-btn"
+            class="modal__button modal__button--confirm">Confirm</button>
         </div>
       </form>
     </dialog>

@@ -1,6 +1,6 @@
 import { showToast } from "../utils/toast.js";
 
-const projectList = document.getElementById('project-list');
+const projectList = document.getElementById('project-container');
 
 export const renderProjects = (projects, selectedId) => {
   const fragment = document.createDocumentFragment();
@@ -47,73 +47,6 @@ export const renderProjects = (projects, selectedId) => {
   projectList.appendChild(fragment);
 };
 
-export const bindProjectModalActions = (addCallback, updateCallback) => {
-  const form = document.getElementById('project-form');
-  const title = document.getElementById('project-title-input');
-  const projectModal = document.getElementById('project-modal');
-  const addProjectButton = document.getElementById('project-add-btn');
-  const cancelButton = document.getElementById('project-cancel-btn');
-  const projectModalTitle = document.getElementById('project-modal-title');
-
-  if (!form || !title || !projectModal || !addProjectButton || !projectModalTitle) return;
-
-  let currentMode = 'add';
-
-  addProjectButton.addEventListener('click', () => {
-    currentMode = 'add';
-    projectModalTitle.textContent = 'Add Project';
-    form.reset();
-    projectModal.showModal();
-    delete form.dataset.id;
-  });
-
-  projectList.addEventListener('click', (e) => {
-    if (e.target.closest('.project-item__edit')) {
-      const editTitleButton = e.target.closest('.project-item__edit');
-      if (!editTitleButton) return;
-      e.stopPropagation();
-
-      currentMode = 'edit';
-      const projectItem = editTitleButton.closest('.project-item');
-      form.dataset.id = projectItem.dataset.id;
-      title.value = projectItem.querySelector('.project-item__title')?.textContent || '';
-      projectModalTitle.textContent = 'Edit Project Title';
-      title.select();
-      projectModal.showModal();
-    }
-  });
-
-  if (cancelButton) {
-    cancelButton.addEventListener('click', () => {
-      projectModal.close();
-      title.value = '';
-    });
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const value = title.value.trim();
-
-    if (isProjectTitleTaken(value)) {
-      showToast('This project title already exists.', 'warning');
-      title.select();
-      return;
-    }
-
-    if (currentMode === 'add') {
-      showToast(`Project "${value}" added successfully.`, 'success');
-      addCallback(value);
-      title.value = '';
-      projectModal.close();
-    } else if (currentMode === 'edit') {
-      const projectId = form.dataset.id;
-      showToast(`Project renamed to "${value}".`, 'info');
-      updateCallback(projectId, value);
-      projectModal.close();
-    }
-  });
-};
-
 export const bindRemoveProject = (callbackFunction) => {
   projectList.addEventListener('click', (e) => {
     if (e.target.closest('.project-item__delete')) {
@@ -139,14 +72,6 @@ export const bindSelectProject = (callbackFunction) => {
     const projectId = li.dataset.id;
     callbackFunction(projectId);
   });
-};
-
-const isProjectTitleTaken = (title, currentSpan = null) => {
-  const existingTitle = Array.from(document.querySelectorAll('.project-item__title'))
-    .filter(span => span !== currentSpan)
-    .map(span => span.textContent.trim().toLowerCase());
-
-  return existingTitle.includes(title.trim().toLowerCase());
 };
 
 export const bindProjectPanelToggle = () => {
