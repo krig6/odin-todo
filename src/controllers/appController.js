@@ -1,8 +1,9 @@
-import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectModalActions, bindProjectPanelToggle } from '../views/projectView.js';
+import { renderProjects, bindRemoveProject, bindSelectProject, bindProjectPanelToggle } from '../views/projectView.js';
 
 import { projectController } from './projectController.js';
 
-import { renderLists, bindOpenListModal, bindRemoveList, bindListFormSubmit } from '../views/listView.js';
+import { renderLists, bindRemoveList } from '../views/listView.js';
+import { bindUnifiedModalSubmit, bindOpenModal } from './modalController.js';
 import { listController } from './listController.js';
 
 import { renderTodos, bindTodoModalActions, bindRemoveTodo, bindToggleTodoStatus } from '../views/todoView.js';
@@ -10,7 +11,7 @@ import { todoController } from './todoController.js';
 
 import { storageController } from '../storage/storageController.js';
 import { sampleProjects } from '../sampleData.js';
-import { showToast } from "../utils/toast.js";
+import { getProjectCount } from '../utils/helpers.js'
 
 export const appController = () => {
   const projCntrlr = projectController();
@@ -61,8 +62,6 @@ export const appController = () => {
     titleEl.textContent = project ? project.title : 'All slacking! Add a project first.';
   };
 
-  const getProjectCount = () => projects.length;
-
   const init = () => {
     selectedProjectId = storageCntrlr.loadSelectedProject(selectedProjectId) || projects[0]?.id || null;
     renderProjects(projects, selectedProjectId);
@@ -74,35 +73,55 @@ export const appController = () => {
     }
 
     bindProjectPanelToggle();
+    bindOpenModal(() => getProjectCount(projects))
 
-    bindProjectModalActions(
-      (projectTitle) => {
-        projects = projCntrlr.addProject(projects, { title: projectTitle });
-        selectedProjectId = projects[projects.length - 1].id;
-        renderProjects(projects, selectedProjectId);
-
-        hideProjectPanel();
-
-        const project = getProject(selectedProjectId);
-        renderLists(project.lists);
-        updateListViewHeader(project);
-        persistState();
+    bindUnifiedModalSubmit(
+      (type, title) => {
+        if (type === 'list') {
+          if (!selectedProjectId) return;
+          const project = getProject(selectedProjectId);
+          if (!project) return;
+          project.lists = listCntrlr.addList(project.lists, { title: title });
+          renderProjectView(project);
+          persistState();
+        } else {
+          projects = projCntrlr.addProject(projects, { title: title });
+          selectedProjectId = projects[projects.length - 1].id;
+          renderProjects(projects, selectedProjectId);
+          hideProjectPanel();
+          const project = getProject(selectedProjectId);
+          renderLists(project.lists);
+          updateListViewHeader(project);
+          persistState();
+        }
       },
-      (projectId, newTitle) => {
-        selectedProjectId = projectId;
-        projects = projCntrlr.updateProjectTitle(projects, projectId, newTitle);
-        renderProjects(projects, projectId);
-        const project = getProject(selectedProjectId);
-        updateListViewHeader(project);
-        persistState();
+      (type, id, newTitle) => {
+        if (type === 'list') {
+          const project = getProject(selectedProjectId);
+          if (!project) return;
+          project.lists = project.lists.map(list => {
+            if (list.id === id) {
+              return { ...list, title: newTitle };
+            }
+            return list;
+          });
+          renderProjectView(project);
+          persistState();
+        } else {
+          selectedProjectId = id;
+          projects = projCntrlr.updateProjectTitle(projects, id, newTitle);
+          renderProjects(projects, id);
+          const project = getProject(selectedProjectId);
+          updateListViewHeader(project);
+          persistState();
+        }
       }
     );
 
     bindRemoveProject((projectId) => {
       projects = projCntrlr.removeProject(projects, projectId);
       renderProjects(projects);
-
-      if (selectedProjectId === projectId && getProjectCount() !== 0) {
+      if (selectedProjectId === projectId && getProjectCount(projects) !== 0) {
         selectedProjectId = projects[0].id;
         const project = getProject(selectedProjectId);
         renderProjectView(project);
@@ -129,40 +148,6 @@ export const appController = () => {
       storageCntrlr.saveSelectedProject(selectedProjectId);
     });
 
-    bindOpenListModal((listModal, listInput, listTitle) => {
-      if (getProjectCount() === 0) {
-        showToast('You must create a project before adding a list.', 'info');
-        return;
-      }
-      listInput.value = listTitle || '';
-      listModal.showModal();
-      listInput.focus();
-    });
-
-    bindListFormSubmit(
-      (listTitle) => {
-        if (!selectedProjectId) return;
-        const project = getProject(selectedProjectId);
-        if (!project) return;
-
-        project.lists = listCntrlr.addList(project.lists, { title: listTitle });
-        renderProjectView(project);
-        persistState();
-      },
-      (listId, newTitle) => {
-        const project = getProject(selectedProjectId);
-        if (!project) return;
-
-        project.lists = project.lists.map(list => {
-          if (list.id === listId) {
-            return { ...list, title: newTitle };
-          }
-          return list;
-        });
-        renderProjectView(project);
-        persistState();
-      }
-    );
 
     bindRemoveList((listId) => {
       if (!selectedProjectId) return;

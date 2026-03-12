@@ -122,8 +122,7 @@ h3 {
 /* ============================================================ */
 /*  SHARED - TITLES                                            */
 /* ============================================================ */
-.project-modal__title,
-.list-modal__title,
+.modal__title,
 .todo-modal__title {
   font-size: 1rem;
   font-weight: 700;
@@ -144,8 +143,6 @@ h3 {
 /* ============================================================ */
 /*  SHARED - MODALS                                            */
 /* ============================================================ */
-.project-modal,
-.list-modal,
 .modal {
   position: fixed;
   top: 50%;
@@ -162,15 +159,11 @@ h3 {
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.project-modal[open],
-.list-modal[open],
 .modal[open] {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
 }
 
-.project-modal::backdrop,
-.list-modal::backdrop,
 .modal::backdrop {
   background-color: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(0.1px);
@@ -179,8 +172,7 @@ h3 {
 /* ============================================================ */
 /*  SHARED - MODAL FORMS                                       */
 /* ============================================================ */
-.project-modal__form,
-.list-modal__form,
+.modal__form,
 .todo-modal__form,
 .project-panel__body {
   display: flex;
@@ -188,8 +180,7 @@ h3 {
   gap: 0.5rem;
 }
 
-.project-modal__label,
-.list-modal__label,
+.modal__label,
 .todo-modal__label {
   color: #607d8b;
   font-size: 0.8rem;
@@ -202,8 +193,7 @@ h3 {
   z-index: 100;
 }
 
-.project-modal__input,
-.list-modal__input,
+.modal__title-input,
 .todo-modal__input,
 .todo-modal__textarea,
 .todo-modal__select {
@@ -220,8 +210,7 @@ h3 {
   outline: none;
 }
 
-.project-modal__input:focus,
-.list-modal__input:focus,
+.modal__title-input:focus,
 .todo-modal__input:focus,
 .todo-modal__textarea:focus,
 .todo-modal__select:focus {
@@ -233,18 +222,15 @@ h3 {
 /* ============================================================ */
 /*  SHARED - MODAL ACTION BUTTONS                              */
 /* ============================================================ */
-.project-modal__action-buttons,
-.list-modal__action-buttons,
+.modal__actions,
 .todo-modal__action-buttons {
   display: flex;
   justify-content: space-around;
   margin-top: 0.5rem;
 }
 
-.project-modal__cancel-btn,
-.project-modal__confirm-btn,
-.list-modal__cancel-btn,
-.list-modal__confirm-btn,
+.modal__button--cancel,
+.modal__button--confirm,
 .todo-modal__confirm-btn,
 .todo-modal__cancel-btn {
   padding: 0.55rem 1.2rem;
@@ -258,23 +244,20 @@ h3 {
   color: #37474f;
 }
 
-.project-modal__confirm-btn,
-.list-modal__confirm-btn,
+.modal__button--confirm,
 .todo-modal__confirm-btn {
   background-color: #607d8b;
   color: #fff;
 }
 
-.project-modal__confirm-btn:hover,
-.list-modal__confirm-btn:hover,
+.modal__button--confirm:hover,
 .todo-modal__confirm-btn:hover {
   background-color: #455a64;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(69, 90, 100, 0.5);
 }
 
-.project-modal__cancel-btn:hover,
-.list-modal__cancel-btn:hover,
+.modal__button--cancel:hover,
 .todo-modal__cancel-btn:hover {
   background-color: #b0bec5;
   transform: translateY(-2px);

@@ -62,75 +62,6 @@ export const renderLists = (lists) => {
   listContainer.appendChild(fragment);
 };
 
-export const bindOpenListModal = (callbackFunction) => {
-  const listModal = document.getElementById('list-modal');
-  const listInput = document.getElementById('list-title-input');
-  const addListBtn = document.getElementById('list-add-btn');
-
-  if (!listModal || !listInput || !addListBtn) return;
-
-  addListBtn.onclick = () => callbackFunction(listModal, listInput);
-
-  listContainer.addEventListener('click', (e) => {
-    if (e.target.closest('.list-item__edit')) {
-      const editTitleBtn = e.target.closest('.list-item__edit');
-      const listItem = editTitleBtn.closest('.list-item');
-      const title = listItem.querySelector('.list-item__title').textContent;
-      listModal.dataset.id = listItem.dataset.id;
-      listModal.dataset.mode = 'edit';
-      callbackFunction(listModal, listInput, title);
-    }
-  });
-};
-
-export const bindListFormSubmit = (addCallback, updateCallback) => {
-  const cancelBtn = document.getElementById('list-cancel-btn');
-  const listModal = document.getElementById('list-modal');
-  const listForm = document.getElementById('list-form');
-  const listInput = document.getElementById('list-title-input');
-
-  cancelBtn.onclick = () => {
-    listInput.value = '';
-    listModal.close();
-    listModal.dataset.id = '';
-    listModal.dataset.mode = 'add';
-  };
-
-  if (!listModal || !listForm || !listInput) return;
-
-  listForm.onsubmit = (e) => {
-    e.preventDefault();
-
-    const value = listInput.value.trim();
-    if (!value) return;
-
-    const mode = listModal.dataset.mode;
-    const listId = listModal.dataset.id;
-
-    if (mode === 'edit') {
-      if (isListTitleTaken(value)) {
-        alert('This list title already exists.');
-        listInput.select();
-        return;
-      }
-      showToast(`List renamed to "${value}".`, 'info');
-      updateCallback(listId, value);
-    } else {
-      if (isListTitleTaken(value)) {
-        alert('This list title already exists.');
-        listInput.select();
-        return;
-      }
-      showToast(`List "${value}" added successfully.`, 'success');
-      addCallback(value);
-    }
-    listModal.close();
-    listModal.value = '';
-    listModal.dataset.mode = 'add';
-    listModal.dataset.id = '';
-  };
-};
-
 export const bindRemoveList = (callbackFunction) => {
   listContainer.addEventListener('click', (e) => {
     if (e.target.closest('.list-item__delete')) {
@@ -144,10 +75,3 @@ export const bindRemoveList = (callbackFunction) => {
   });
 };
 
-const isListTitleTaken = (title, currentSpan = null) => {
-  const existingTitle = Array.from(document.querySelectorAll('.list-item__title'))
-    .filter(span => span !== currentSpan)
-    .map(span => span.textContent.trim().toLowerCase());
-
-  return existingTitle.includes(title.trim().toLowerCase());
-};
