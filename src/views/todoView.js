@@ -1,4 +1,5 @@
 import { showToast } from "../utils/toast.js";
+import { isTitleTaken } from "../utils/helpers.js";
 
 export const renderTodos = (listId, todos) => {
   const todoContainer = document.querySelector(`.todo-container[data-list-id="${listId}"]`);
@@ -133,11 +134,23 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
 
     if (!title) return;
 
+    const existingTitles = Array.from(
+      document.querySelectorAll('.todo-item__title')
+    ).map(span => span.textContent.trim().toLowerCase())
+
+    let titlesToCheck = existingTitles
+
+    if (isTitleTaken(titlesToCheck, title)) {
+      showToast(`This title already exists.`, 'info');
+      titleInput.select();
+      return;
+    }
+
     if (currentMode === 'add') {
       showToast(`Todo "${title}" added successfully.`, 'success');
       addCallback(listId, { title, description, dueDate, priority });
     } else if (currentMode === 'edit') {
-      showToast(`Todo renamed to "${title}".`, 'info');
+      showToast(`Todo "${title}" updated.`, 'info');
       updateCallback(listId, todoId, { title, description, dueDate, priority });
     }
 
