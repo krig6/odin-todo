@@ -13,6 +13,17 @@ export const renderTodos = (listId, todos) => {
     li.classList.add('todo-item', `todo-item--${todo.priority}`);
     li.dataset.status = todo.status === 'completed' ? 'completed' : 'inprogress'
 
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const dueDateObj = new Date(todo.dueDate);
+    dueDateObj.setHours(0, 0, 0, 0);
+
+    if (today >= dueDateObj && li.dataset.status !== 'completed') {
+      li.classList.add('todo-item--overdue');
+    }
+
     const title = document.createElement('span');
     title.textContent = todo.title;
     title.classList.add('todo-item__title');
