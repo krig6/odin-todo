@@ -39,6 +39,83 @@
   opacity: 0.8;
 }
 
+/* ============================================================ */
+/*  SORT DROPDOWN                                               */
+/* ============================================================ */
+.sort-dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: "Inter", sans-serif;
+}
+
+.sort-btn {
+  cursor: pointer;
+  font-size: 1rem;
+  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #b0bec5;
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sort-btn:hover {
+  background-color: #eceff1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sort-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  border: 1px solid #b0bec5;
+  border-radius: 6px;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 999;
+  font-size: 0.875rem;
+}
+
+.sort-options.show {
+  display: block;
+}
+
+.sort-options .option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  color: #37474f;
+  transition: background-color 0.2s ease;
+}
+
+.sort-options .option:hover {
+  background-color: #eceff1;
+}
+
+.sort-options .option.selected {
+  background-color: #b0bec5;
+  color: #fff;
+  font-weight: 600;
+}
+
+.sort-options hr {
+  margin: 0.25rem 0;
+  border: none;
+  border-top: 1px solid #b0bec5;
+}
+
+/* ============================================================ */
+/*  TODO ACTIONS CONTAINER (Add + Sort)                        */
+/* ============================================================ */
+.todo-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
 @media (min-width: 768px) {
 
   .list-view__add-btn,

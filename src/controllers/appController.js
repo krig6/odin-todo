@@ -2,7 +2,7 @@ import { renderProjects, bindSelectProject, bindProjectPanelToggle } from '../vi
 
 import { projectController } from './projectController.js';
 
-import { renderLists } from '../views/listView.js';
+import { renderLists, bindSortSelection, bindSortDropdownToggle } from '../views/listView.js';
 import { bindUnifiedModalSubmit, bindOpenModal } from '../views/modalView.js';
 import { listController } from './listController.js';
 
@@ -186,6 +186,18 @@ export const appController = () => {
         persistState();
       }
     );
+
+    bindSortDropdownToggle();
+
+    bindSortSelection((listId, field) => {
+      const [project, list] = getListContext(listId);
+      if (!project || !list) return;
+
+      list.todos = todoCntrlr.sortTodos(list.todos, field);
+
+      renderTodos(listId, list.todos);
+      storageCntrlr.saveProjects(projects);
+    });
 
     bindToggleTodoStatus((listId, todoId) => {
       const [project, list] = getListContext(listId);
