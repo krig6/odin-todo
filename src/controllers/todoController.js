@@ -18,15 +18,20 @@ export const todoController = () => {
   const sortTodos = (todos, field) => {
     const priorityRank = { high: 3, medium: 2, low: 1 };
 
-    return [...todos].sort((a, b) => {
-      if (field === "dueDate") {
-        return new Date(a.dueDate) - new Date(b.dueDate);
-      }
-      if (field === "priority") {
-        return (priorityRank[b.priority] || 0) - (priorityRank[a.priority] || 0);
-      }
-      return 0;
-    });
+    const inProgress = todos.filter(todo => todo.status !== 'completed');
+    const completed = todos.filter(todo => todo.status === 'completed');
+
+    let sorted = [];
+
+    if (field === "dueDate") {
+      sorted = inProgress.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+    } else if (field === "priority") {
+      sorted = inProgress.sort((a, b) => (priorityRank[b.priority] || 0) - (priorityRank[a.priority] || 0));
+    } else {
+      sorted = [...inProgress];
+    }
+
+    return [...sorted, ...completed];
   };
 
   return { addTodo, removeTodo, updateTodo, toggleTodoStatus, sortTodos };

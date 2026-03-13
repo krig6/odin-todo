@@ -194,7 +194,7 @@ export const appController = () => {
       if (!project || !list) return;
 
       list.todos = todoCntrlr.sortTodos(list.todos, field);
-
+      list.currentSort = field
       renderTodos(listId, list.todos);
       storageCntrlr.saveProjects(projects);
     });
@@ -204,6 +204,7 @@ export const appController = () => {
       if (!project || !list) return;
 
       list.todos = todoCntrlr.toggleTodoStatus(list.todos, todoId);
+      list.todos = todoCntrlr.sortTodos(list.todos, list.currentSort || 'dueDate')
       renderTodos(listId, list.todos);
       persistState();
     });
