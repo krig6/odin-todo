@@ -35,8 +35,12 @@ This **Todo** application, built as part of [The Odin Project](https://www.theod
   - **Due date**
   - **Priority**: High, Medium, Low (color-coded: red, orange, green)
   - **Status**: Mark as completed or in progress, with hover tooltip showing current status.
+- **Todo Sorting** – Sort todos using a dropdown menu for better task organization. Completed todos are automatically kept at the bottom.
+- **Due Date Indicators** – Overdue todos are visually highlighted to help users quickly identify tasks that need attention.
 - **Persistent Storage** – All projects, lists, and todos are stored in **localStorage**, so data persists across browser sessions.
 - **Modals & Forms** – Add or edit projects, lists, and todos via accessible, animated dialog modals.
+- **Toast Notifications** – Global toast messages provide feedback for actions such as creating or deleting items.
+- **Tooltips** – Buttons and status indicators display helpful hover tooltips.
 - **Responsive Layout** – Works on mobile and desktop using **Flexbox** and **CSS Grid**.
 - **Interactive UI** – Hover effects and subtle card lifts for projects, lists, and todos.
 - **Animations** – Buttons shake or lift on hover for visual feedback.
