@@ -5,6 +5,8 @@ export const renderTodos = (listId, todos) => {
   const todoContainer = document.querySelector(`.todo-container[data-list-id="${listId}"]`);
   if (!todoContainer) return;
 
+  const fragment = document.createDocumentFragment()
+
   todoContainer.innerHTML = '';
 
   todos.forEach(todo => {
@@ -50,8 +52,8 @@ export const renderTodos = (listId, todos) => {
     statusBtn.dataset.tooltip = todo.status === 'completed' ? 'Completed' : 'In Progress';
 
     const statusIcon = document.createElement('i');
-    const isCompleted = todo.status === 'inProgress' ? false : true;
-    statusIcon.classList.add(isCompleted ? 'bx-check-circle' : 'bx-clock-dashed-half');
+    const isCompleted = todo.status === 'completed'
+    statusIcon.classList.add('bx', isCompleted ? 'bx-check-circle' : 'bx-clock-dashed-half');
     statusBtn.appendChild(statusIcon);
 
     const deleteBtn = document.createElement('button');
@@ -69,8 +71,10 @@ export const renderTodos = (listId, todos) => {
     todoHeader.append(title, controlsContainer);
 
     li.append(todoHeader, description, dueDate, priority);
-    todoContainer.appendChild(li);
+    fragment.appendChild(li)
   });
+
+  todoContainer.appendChild(fragment);
 };
 
 export const bindTodoModalActions = (addCallback, updateCallback) => {
@@ -142,14 +146,21 @@ export const bindTodoModalActions = (addCallback, updateCallback) => {
     const description = descriptionInput.value.trim();
     const dueDate = dueDateInput.value ? new Date(dueDateInput.value) : undefined;
     const priority = priorityInput.value;
+    const todoContainer = document.querySelector(`.todo-container[data-list-id="${listId}"]`)
 
     if (!title) return;
 
     const existingTitles = Array.from(
-      document.querySelectorAll('.todo-item__title')
+      todoContainer.querySelectorAll('.todo-item__title')
     ).map(span => span.textContent.trim().toLowerCase())
 
     let titlesToCheck = existingTitles
+
+    if (currentMode === 'edit') {
+      if (title) {
+        titlesToCheck = existingTitles.filter(t => t !== title.trim().toLowerCase());
+      }
+    }
 
     if (isTitleTaken(titlesToCheck, title)) {
       showToast(`This title already exists.`, 'info');
