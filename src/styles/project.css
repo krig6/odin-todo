@@ -75,6 +75,35 @@
   color: #fff;
 }
 
+/* ============================================================ */
+/*  FOOTER                                                      */
+/* ============================================================ */
+.site-footer {
+  color: #78909c;
+  font-size: 0.75rem;
+  position: absolute;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  bottom: 0;
+  align-self: center;
+}
+
+.site-footer__icon {
+  vertical-align: middle;
+  color: #78909c;
+  transition: transform 0.2s ease-in-out;
+}
+
+.site-footer__icon:hover {
+  transform: scale(1.1);
+}
+
+.site-footer__icon:active {
+  transform: scale(1);
+}
+
 @media (min-width: 1024px) {
   .project-panel {
     position: relative !important;
