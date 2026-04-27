@@ -45,6 +45,10 @@
 /* ============================================================ */
 .project-panel__body {
   padding: 0.5rem 1rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #78909c #eaeaea;
+  max-height: 80vh;
 }
 
 .project-panel__title {
@@ -119,5 +123,9 @@
 
   .project-panel__toggle-btn {
     display: none;
+  }
+
+  .project-panel__body {
+    max-height: 65vh;
   }
 }

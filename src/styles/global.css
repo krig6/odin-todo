@@ -20,6 +20,7 @@
 
 html {
   font-family: "Inter", sans-serif;
+  overflow: hidden;
 }
 
 body {
