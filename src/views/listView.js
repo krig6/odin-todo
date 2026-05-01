@@ -67,10 +67,11 @@ export const renderLists = (lists) => {
 
 const renderSortDropdown = (listId) => {
   const wrapper = document.createElement("div");
-  wrapper.classList.add("sort-dropdown");
+  wrapper.classList.add("sort-dropdown", "has-tooltip");
+  wrapper.dataset.tooltip = "Sort"
 
   wrapper.innerHTML = `
-    <button class="sort-btn" data-list-id="${listId}">
+    <button class="sort-btn" data-list-id="${listId}" data-tooltip="Sort">
       <i class='bx bx-arrow-up-down'></i>
     </button>
     <div class="sort-options">
