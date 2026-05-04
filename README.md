@@ -8,10 +8,16 @@ This **Todo** application, built as part of [The Odin Project](https://www.theod
 
 ## Screenshots
 
-![Todo List - Desktop View](./src/assets/images/screenshots/screenshot-1.png)
-![Todo List - Create Project Modal](./src/assets/images/screenshots/screenshot-2.png)
-![Todo List - Create List Modal](./src/assets/images/screenshots/screenshot-3.png)
-![Todo List - Create Todo Modal](./src/assets/images/screenshots/screenshot-4.png)
+<details>
+  <summary>View Responsive Screenshots</summary>
+
+  <p align="center">
+    <img src="./src/assets/images/screenshots/screenshot-1.jpeg" width="100%" />
+    <img src="./src/assets/images/screenshots/screenshot-2.jpeg" width="40%" />
+    <img src="./src/assets/images/screenshots/screenshot-3.jpeg" width="40%" />
+  </p>
+
+</details>
 
 ## Technologies Used
 
